@@ -32,8 +32,11 @@ node_modules
 # Optional REPL history
 .node_repl_history
 
-#VSCode launcher
+#VSCode launcher and typings
 .vscode
+typings
 
 #bower components
 public/bower_components
+
+
