@@ -34,3 +34,7 @@ node_modules
 
 #VSCode launcher
 .vscode
+
+#bower components
+
+public/bower_components
