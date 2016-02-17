@@ -1,67 +1,145 @@
 angular.module('app')
     .controller('BookmarkCtrl', function($scope, $mdDialog, $mdMedia, BookmarkFactory) {
         var vm = this;
-        vm.bookmarks = [];
+        vm.bookmarkList = [];
+        vm.categories = [];
         
         vm.getBookmarks = function(){
             BookmarkFactory.getBookmarks()
             .then(function(res){
                 console.log(res.data);
-                vm.bookmarks = res.data;
+                vm.bookmarkList = res.data;
             }, function(res ){
                 console.log(res);
             })
         }; 
         
+        vm.getCategories = function(){
+            BookmarkFactory.getCategories()
+            .then(function(res){                
+                vm.categories = res.data;
+                vm.categories.push({"_id":"0", "category_type":"Custom"});
+            }, function(res ){
+                console.log(res);
+            })
+        }; 
+        
+        vm.updateBookmark = function(bookmark){
+             BookmarkFactory.updateBookmark(bookmark)
+            .then(function(res){      
+                vm.getBookmarks();          
+                console.log(res.data);               
+            }, function(res ){
+                console.log(res);
+            })
+        };
+        
+        vm.deleteBookmark = function(cid, bid){
+            var data = {
+                "categoryId": cid,
+                "bookmarkId": bid
+            };
+            
+            BookmarkFactory.deleteBookmark(data)
+            .then(function(res){      
+                vm.getBookmarks();          
+                console.log(res.data);               
+            }, function(res ){
+                console.log(res);
+            })
+        };
+        
         vm.getBookmarks();
+        vm.getCategories();
         
         vm.saveBookmark = function(category){
-            
-            var data = {
-                "category_type" : category.categoryName,
-                "bookmark":{
-                    "name":category.bookmarkName,
-                    "uri":  category.uri
-                }
-            };
-                    
-            BookmarkFactory.postBookmark(data)
+            var data;
+                       
+            if(category.selectedCategory._id != "0" ){
+                
+                data = {
+                    "id": category.selectedCategory._id,                    
+                    "bookmark":{
+                        "name": category.bookmarkName,
+                        "uri":  category.uri
+                    }
+                };
+                
+                BookmarkFactory.updateBookmarkWithCategory(data)
                 .then(function(res){
                     console.log(res);
                     vm.getBookmarks();
                 }, function(res){
                     console.log(res);
                 });
+                    
+            }else{
+                data = {
+                    "category_type" : category.categoryName,
+                    "bookmark":{
+                        "name":category.bookmarkName,
+                        "uri":  category.uri
+                    }
+                };
+                        
+                BookmarkFactory.postBookmark(data)
+                    .then(function(res){
+                        console.log(res);
+                        vm.getBookmarks();
+                        vm.getCategories();
+                    }, function(res){
+                        console.log(res);
+                    });
+            }
+            
+            
         };
         
         
 
-        $scope.openCategoryModal = function(ev) {
+        vm.openCategoryModal = function(ev, bookmark) {
             $mdDialog.show({
                     controller: DialogController,
                     //controllerAs: 'ctrl',
                     templateUrl: '../../views/CreateCategory.html',
                     locals: {
-                       saveBookmark: vm.saveBookmark 
+                       items:{
+                           saveBookmark: vm.saveBookmark,
+                           categories: vm.categories,
+                           updateBookmark:vm.updateBookmark,
+                           bookmark: bookmark
+                       } 
                     }, 
                     parent: angular.element(document.body),
                     targetEvent: ev,
                     clickOutsideToClose: true
                 })
-                .then(function(answer) {
-                    $scope.status = 'You said the information was "' + answer + '".';
+                .then(function() {
+                   
                 }, function() {
                     $scope.status = 'You cancelled the dialog.';
                 });
         };
 
-        vm.CreateCategory = function(){
-        	console.log("hello");
-        };
-
     });
 
-function DialogController($scope, $mdDialog, saveBookmark) {
+function DialogController($scope, $mdDialog, items) {
+    
+    if(items.bookmark){
+        $scope.editBookmark = true;
+        $scope.category = {
+            bookmarkId:"",
+            bookmarkName: "",
+            uri:""
+        };
+        $scope.category.bookmarkId = items.bookmark._id;
+        $scope.category.bookmarkName = items.bookmark.name;
+        $scope.category.uri = items.bookmark.uri;        
+        console.log($scope.selectedBookmark);
+    }else{
+      $scope.editBookmark = false;  
+    }
+    
     $scope.hide = function() {
         $mdDialog.hide();
     };
@@ -73,7 +151,20 @@ function DialogController($scope, $mdDialog, saveBookmark) {
     };
     
     $scope.save = function(data){
-        saveBookmark(data);
-    };
+        if($scope.editBookmark){            
+            items.updateBookmark($scope.category)
+        }else{
+            items.saveBookmark(data);    
+        }
+        
+        $mdDialog.hide();
+    };    
+    
+    $scope.selectCategory = function(){
+        //console.log($scope.category.category_id);
+       // $scope.selectedCategory = angular.fromJson($scope.selectedCategory);
+    }
+    
+    $scope.categories = items.categories;
     
 }

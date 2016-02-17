@@ -4,20 +4,20 @@ var Schema = mongoose.Schema;
 
 var BookmarkSchema = new Schema({
 	category_type : { type : String, required: true },
-	bookmark:{
+	bookmarks:[{
 		name : { type : String, required: true },
 		uri: { 
 			type : String, 
 			validate: {
 				validator: function(v){
-					var re = /[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi;
+					var re = /^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
 					return re.test(v);				
 				},
 				message:"Not a valid uri!"
 			},
 			required: true 
 		}
-	},
+	}],
 	created_at: {type: Date, default: Date.now},
     updated_at: {type: Date, default: Date.now}
 });

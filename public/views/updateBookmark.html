@@ -1,0 +1,45 @@
+<md-dialog style="width:50%;" aria-label="Create Category" ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Update Bookmark</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content class="md-padding">
+        <form name="bookmarkForm">                
+            <md-input-container class="md-block">
+                <label>Bookmark Name</label>
+                <input required name="bookmarkName" ng-model="bookmark.bookmarkName">
+                <div ng-messages="bookmarkForm.bookmarkName.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>URI</label>
+                 <!-- ng-pattern="/[-a-zA-Z0-9@:%_\+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_\+.~#?&//=]*)?/gi" -->
+                <input required type="text" name="uri" ng-model="bookmark.uri" />
+                <div ng-messages="bookmarkForm.bookmarkName.$error">
+                    <div ng-message="required">This is required.</div>
+                </div>
+                <!-- <div ng-messages="categoryForm.uri.$error" role="alert">
+                    <div ng-message-exp="['required','pattern']">
+                        Please enter a valid URI
+                    </div>
+                </div> -->
+            </md-input-container> 
+
+            <md-input-container class="md-block">       
+                 <md-button ng-disabled="bookmarkForm.$invalid" ng-click="save(category)"> Save </md-button> 
+            </md-input-container>
+          </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>   
+        <md-button ng-click="cancel('cancel')" style="margin-right:20px;">
+            cancel
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>

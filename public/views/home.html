@@ -1,14 +1,16 @@
-<div layout="row"><md-button ng-click="openCategoryModal($event)">Add Category</md-button></div>	
+<div layout="row"><md-button ng-click="vm.openCategoryModal($event)">Add Category</md-button></div>	
 <div class='md-padding' layout="row" layout-wrap>
-    <md-card style="width: 410px; margin: 35px;" ng-repeat="b in vm.bookmarks">
+    <md-card style="width: 410px; margin: 35px;" ng-repeat="c in vm.bookmarkList">
         <md-card-title>
             <md-card-title-text layout="column">
-                <span class="md-headline">{{b.category_type}}</span>
+                <h2 class="md-headline">{{c.category_type | uppercase}}</h2>
             </md-card-title-text>
         </md-card-title>
-        <md-card-content>
-            <h2>{{b.bookmark.name}}</h2>
-            <p>{{b.bookmark.uri}}</p>
+        <md-card-content ng-repeat="b in c.bookmarks">            
+            <p> 
+                <a ng-href="{{b.uri}}">{{b.name | uppercase}}</a> 
+                <span ng-click="vm.openCategoryModal($event, b)"> edit</span> | <span ng-click="vm.deleteBookmark(c._id, b._id)">delete</span>
+            </p>
         </md-card-content>
     </md-card>
 </div>

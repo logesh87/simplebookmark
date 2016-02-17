@@ -4,6 +4,16 @@ var Bookmark = require('./models/bookmark.js');
 
 
 module.exports = function(app) {
+    
+    app.get('/categories', function(req, res){
+		var query = Bookmark.find({}, {category_type:1, _id:1});
+		query.exec(function(err, bookmarks){			
+            if(err){            	
+                res.send(err);            
+            }            	
+            res.json(bookmarks);
+        });
+	});
 	
 
 	app.get('/bookmarks', function(req, res){
@@ -17,39 +27,46 @@ module.exports = function(app) {
 	});
 
 	app.post('/bookmark', function(req, res){
+ 
+        var bookmark = new Bookmark(req.body);
+        bookmark.category_type = req.body.category_type;
+        bookmark.bookmarks.push(req.body.bookmark);
         
-        var categoryName = req.body.category_type;
-        
-        var query = Bookmark.find({"category_type":categoryName});
-        query.exec(function(err, bookmarks){
-           if(err){
-               console.log(err);
-           }  
-           
-           if(bookmarks.length < 1){
-                var bookmark = new Bookmark(req.body);
-		
-                bookmark.save(function(err){
-                    if (err) {
-                        res.json(err.errors);
-                    }
-                    res.json(req.body);
-                });
-           }
-           console.log(bookmark);  
+        bookmark.save(function(err){
+            if (err) {
+                res.json(err.errors);
+            }
+            res.json(req.body);
         });
-                
+           
 		
 	});
+    
+    app.put('/update_bookmark', function(req, res){
+        Bookmark.update({'bookmarks._id':req.body.bookmarkId}, {'$set':{
+            'bookmarks.$.name':req.body.bookmarkName,
+            'bookmark.$.uri': req.body.uri
+            
+        }}, function(err, data){
+             if(err){
+                 res.send(err);
+             }
+             res.json(data);   
+        }); 
+    });
 
 	app.put('/bookmark', function(req, res){
-		Bookmark.findById(req.params.bookmark_id, function(err, bookmark){
+		
+        Bookmark.findById(req.body.id, function(err, bookmark){
 			if (err) {
 				res.send(err);
 			}
-			bookmark.category_type = req.body.category_type;
-			bookmark.name = req.body.name;
-			bookmark.uri = req.body.uri;
+			
+            bookmark.bookmarks.push(req.body.bookmark);
+            
+            
+            //bookmark.name = req.body.name;
+			//bookmark.uri = req.body.uri;
 
 			bookmark.save(function(err){
 				if(err){
@@ -59,10 +76,22 @@ module.exports = function(app) {
 				res.json({ message: 'Bookmark updated'});
 			});
 		});
+        
+        
 	});
 
 	app.delete('/bookmark', function(req, res){
-		console.log(req.body.bookmark_id);
+         console.log(req.body);
+         Bookmark.findByIdAndUpdate(req.body.categoryId, {
+             $pull:{ 'bookmarks':{ _id: req.body.bookmarkId } }
+         }, function(err, data){
+             if(err){
+                 res.send(err);
+             }
+             res.json(data);   
+        }); 
+		/*console.log(req.body.bookmark_id);
+        
 		Bookmark.remove({
 			_id:req.body.bookmark_id
 		}, function(err, bookmark){
@@ -71,7 +100,7 @@ module.exports = function(app) {
 			}
 
 			res.json({message: "Successfully deleted"});
-		});
+		});*/
 	});
 
 	/*app.get('*', function(req, res) {

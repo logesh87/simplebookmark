@@ -7,6 +7,12 @@ angular.module('app')
 					url:'/bookmarks',
 				});
 			},
+            getCategories: function(){
+				return $http({
+					method:'GET',
+					url:'/categories',
+				});
+			},
 			postBookmark: function(bookmark){
 				return $http({
 					url:'/bookmark',
@@ -16,19 +22,28 @@ angular.module('app')
 				});
 
 			},
-			updateBookmark: function(bookmark_id){
+            updateBookmark: function(bookmark){
+				return $http({
+					method:'PUT',
+					url:'/update_bookmark',
+					data: bookmark
+				});
+
+			},            
+			updateBookmarkWithCategory: function(bookmark){
 				return $http({
 					method:'PUT',
 					url:'/bookmark',
-					data: bookmark_id
+					data: bookmark
 				});
 
 			},
-			deleteBookmark: function(bookmark_id){
+			deleteBookmark: function(data){
 				return $http({
 					method:'DELETE',
 					url:'/bookmark',
-					data:bookmark_id
+					data:data,
+                    headers: {"Content-Type": "application/json;charset=utf-8"}
 				});
 
 			}
