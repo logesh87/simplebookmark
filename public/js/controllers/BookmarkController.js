@@ -55,7 +55,7 @@ angular.module('app')
         vm.saveBookmark = function(category){
             var data;
                        
-            if(category.selectedCategory._id != "0" ){
+            if(category.selectedCategory && category.selectedCategory._id != "0" ){
                 
                 data = {
                     "id": category.selectedCategory._id,                    

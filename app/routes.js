@@ -34,7 +34,7 @@ module.exports = function(app) {
         
         bookmark.save(function(err){
             if (err) {
-                res.json(err.errors);
+                res.send(err);
             }
             res.json(req.body);
         });
