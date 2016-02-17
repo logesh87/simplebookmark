@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A simple bookmarking app developed using MEAN stack",
   "main": "index.js",
-  "postinstall": "bower install",
+  "postinstall": "./node_modules/bower/bin/bower install",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -27,6 +27,8 @@
     "express": "^4.13.4",
     "method-override": "^2.3.5",
     "mongoose": "^4.4.3",
-    "morgan": "^1.6.1"
+    "morgan": "^1.6.1",
+    "bower": "^1.7.7"
   }
 }
+
