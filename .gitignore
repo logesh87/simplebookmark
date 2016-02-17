@@ -36,5 +36,4 @@ node_modules
 .vscode
 
 #bower components
-
 public/bower_components
