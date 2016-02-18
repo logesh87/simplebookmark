@@ -4,18 +4,20 @@
     </md-button>    
 </div>	
   
-<div class='md-padding' layout="row" layout-wrap>
-    <md-card style="width: 410px; margin: 35px;" ng-repeat="c in vm.bookmarkList">
-        <md-card-title>
-            <md-card-title-text layout="column">
-                <h2 class="md-headline">{{c.category_type | uppercase}}</h2>
-            </md-card-title-text>
-        </md-card-title>
-        <md-card-content ng-repeat="b in c.bookmarks">            
-            <p> 
-                <a target="_blank" ng-href="{{b.uri}}">{{b.name | uppercase}}</a> 
-                <span class="bk_pointer" ng-click="vm.openCategoryModal($event, b)"> <md-icon>edit</md-icon></span>  <span class="bk_pointer" ng-click="vm.deleteBookmark(c._id, b._id)"><md-icon>delete</md-icon></span>
-            </p>
-        </md-card-content>
-    </md-card>
-</div>
+<md-content class="md-padding" layout-sm="column" layout="row" layout-wrap>
+    <div flex-sm flex-gt-sm="25" layout="column" ng-repeat="c in vm.bookmarkList">
+        <md-card>
+            <md-card-title class="bookmark-heading">
+                <md-card-title-text layout="column">
+                    <h2 class="md-headline">{{c.category_type | uppercase}}</h2>
+                </md-card-title-text>
+            </md-card-title>
+            <md-card-content ng-repeat="b in c.bookmarks">            
+                <p> 
+                    <a target="_blank" ng-href="{{b.uri}}">{{b.name | uppercase}}</a> 
+                    <span class="bk_pointer" ng-click="vm.openCategoryModal($event, b)"> <md-icon>edit</md-icon></span>  <span class="bk_pointer" ng-click="vm.deleteBookmark(c._id, b._id)"><md-icon>delete</md-icon></span>
+                </p>
+            </md-card-content>
+        </md-card>
+    </div>
+</md-content>
