@@ -9,8 +9,9 @@
     <div flex-sm flex-gt-sm="25" layout="column" ng-repeat="c in vm.bookmarkList">
         <md-card>
             <md-card-title class="bookmark-heading">
-                <md-card-title-text layout="column">
-                    <h2 class="md-headline">{{c.category_type | uppercase}}</h2>
+                <md-card-title-text layout="column" style="position:relative;">
+                    <h2 class="md-headline">{{c.category_type | uppercase}} </h2>
+                     <span ng-click="vm.deleteCategory(c._id)" class="bk-del-icon"><i class="material-icons md-light md-24">clear</i></span>
                 </md-card-title-text>
             </md-card-title>
             <md-card-content ng-repeat="b in c.bookmarks">            

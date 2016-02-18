@@ -46,6 +46,15 @@ angular.module('app')
                     headers: {"Content-Type": "application/json;charset=utf-8"}
 				});
 
+			},
+            deleteCategory: function(data){
+				return $http({
+					method:'DELETE',
+					url:'/category',
+					data:data,
+                    headers: {"Content-Type": "application/json;charset=utf-8"}
+				});
+
 			}
 			
 		};

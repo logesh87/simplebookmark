@@ -49,6 +49,20 @@ angular.module('app')
             })
         };
         
+        vm.deleteCategory = function(cid){
+            var data = {
+                "categoryId": cid                
+            };
+            
+            BookmarkFactory.deleteCategory(data)
+            .then(function(res){      
+                vm.getBookmarks();          
+                console.log(res.data);               
+            }, function(res ){
+                console.log(res);
+            })
+        }
+        
         vm.getBookmarks();
         vm.getCategories();
         

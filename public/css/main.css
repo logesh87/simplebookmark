@@ -18,3 +18,10 @@
     font-weight: 400;
     line-height: 15px;
 }
+
+span.bk-del-icon {
+    position: absolute;
+    top: 15px;
+    left: 458px;
+    cursor: pointer;
+}

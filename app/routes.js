@@ -80,8 +80,7 @@ module.exports = function(app) {
         
 	});
 
-	app.delete('/bookmark', function(req, res){
-         console.log(req.body);
+	app.delete('/bookmark', function(req, res){         
          Bookmark.findByIdAndUpdate(req.body.categoryId, {
              $pull:{ 'bookmarks':{ _id: req.body.bookmarkId } }
          }, function(err, data){
@@ -89,18 +88,19 @@ module.exports = function(app) {
                  res.send(err);
              }
              res.json(data);   
-        }); 
-		/*console.log(req.body.bookmark_id);
-        
+        }); 		
+	});
+    
+    app.delete('/category', function(req, res){        
 		Bookmark.remove({
-			_id:req.body.bookmark_id
+			_id:req.body.categoryId
 		}, function(err, bookmark){
 			if (err) {
 				res.send(err);				
 			}
 
 			res.json({message: "Successfully deleted"});
-		});*/
+		}); 		
 	});
 
 	/*app.get('*', function(req, res) {
