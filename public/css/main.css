@@ -20,15 +20,5 @@
 }
 
 span.bk-del-icon {
-    position: absolute;
-    top: 15px;
-    left: 458px;
-    cursor: pointer;
-}
-
-span.bk-add-icon {
-    position: absolute;
-    top: 14px;
-    left: 7px;
     cursor: pointer;
 }
