@@ -4,7 +4,7 @@
             <h2>Create new category</h2>
             <span flex></span>
             <md-button class="md-icon-button" ng-click="cancel()">
-                <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                <md-icon aria-label="Close dialog">close</md-icon>
             </md-button>
         </div>
     </md-toolbar>
@@ -49,13 +49,13 @@
             </md-input-container> 
 
             <md-input-container class="md-block">       
-                 <md-button ng-disabled="categoryForm.$invalid" ng-click="save(category)"> Save </md-button> 
+                 <md-button  class="md-raised md-primary" ng-disabled="categoryForm.$invalid" ng-click="save(category)"> Save </md-button> 
             </md-input-container>
           </form>
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <span flex></span>   
-        <md-button ng-click="cancel('cancel')" style="margin-right:20px;">
+        <md-button class="md-raised md-primary" ng-click="cancel('cancel')" style="margin-right:20px;">
             cancel
         </md-button>
     </md-dialog-actions>
