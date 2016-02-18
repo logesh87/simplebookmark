@@ -1,9 +1,10 @@
-<div layout="row">    
+
+<div class="md-padding" layout="row">    
     <md-button ng-click="vm.openCategoryModal($event)" class="md-fab md-primary">
         <md-icon>add</md-icon>
     </md-button>    
-</div>	
-  
+</div>
+	
 <md-content class="md-padding" layout-sm="column" layout="row" layout-wrap>
     <div flex-sm flex-gt-sm="25" layout="column" ng-repeat="c in vm.bookmarkList">
         <md-card>
