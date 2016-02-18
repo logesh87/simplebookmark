@@ -42,7 +42,8 @@ angular.module('app')
             
             BookmarkFactory.deleteBookmark(data)
             .then(function(res){      
-                vm.getBookmarks();          
+                vm.getBookmarks();    
+                   
                 console.log(res.data);               
             }, function(res ){
                 console.log(res);
@@ -56,7 +57,8 @@ angular.module('app')
             
             BookmarkFactory.deleteCategory(data)
             .then(function(res){      
-                vm.getBookmarks();          
+                vm.getBookmarks(); 
+                vm.getCategories();            
                 console.log(res.data);               
             }, function(res ){
                 console.log(res);
@@ -64,12 +66,12 @@ angular.module('app')
         }
         
         vm.getBookmarks();
-        vm.getCategories();
+         vm.getCategories();
         
         vm.saveBookmark = function(category){
             var data;
                        
-            if(category.selectedCategory && category.selectedCategory._id != "0" ){
+            if( category.selectedCategory && category.selectedCategory._id != "0" ){
                 
                 data = {
                     "id": category.selectedCategory._id,                    
@@ -111,7 +113,8 @@ angular.module('app')
         
         
 
-        vm.openCategoryModal = function(ev, bookmark) {
+        vm.openCategoryModal = function(ev, bookmark, cId) {
+          
             $mdDialog.show({
                     controller: DialogController,
                     //controllerAs: 'ctrl',
@@ -121,7 +124,8 @@ angular.module('app')
                            saveBookmark: vm.saveBookmark,
                            categories: vm.categories,
                            updateBookmark:vm.updateBookmark,
-                           bookmark: bookmark
+                           bookmark: bookmark,
+                           categoryId:cId
                        } 
                     }, 
                     parent: angular.element(document.body),
@@ -168,6 +172,10 @@ function DialogController($scope, $mdDialog, items) {
         if($scope.editBookmark){            
             items.updateBookmark($scope.category)
         }else{
+            if(items.categoryId){
+                console.log(data);
+            }
+            
             items.saveBookmark(data);    
         }
         
