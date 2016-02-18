@@ -71,10 +71,10 @@ angular.module('app')
         vm.saveBookmark = function(category){
             var data;
                        
-            if( category.selectedCategory && category.selectedCategory._id != "0" ){
+            if( category.categoryId && category.categoryId != "0" ){
                 
                 data = {
-                    "id": category.selectedCategory._id,                    
+                    "id": category.categoryId,                    
                     "bookmark":{
                         "name": category.bookmarkName,
                         "uri":  category.uri
@@ -154,8 +154,11 @@ function DialogController($scope, $mdDialog, items) {
         $scope.category.bookmarkName = items.bookmark.name;
         $scope.category.uri = items.bookmark.uri;        
         console.log($scope.selectedBookmark);
+    }else if(items.categoryId){
+        $scope.addBookmark = true;
     }else{
       $scope.editBookmark = false;  
+      $scope.addBookmark = false;
     }
     
     $scope.hide = function() {
@@ -172,8 +175,9 @@ function DialogController($scope, $mdDialog, items) {
         if($scope.editBookmark){            
             items.updateBookmark($scope.category)
         }else{
-            if(items.categoryId){
-                console.log(data);
+            
+            if(items.categoryId){                
+                data.categoryId = items.categoryId
             }
             
             items.saveBookmark(data);    

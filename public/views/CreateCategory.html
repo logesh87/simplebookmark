@@ -10,17 +10,17 @@
     </md-toolbar>
     <md-dialog-content class="md-padding">
         <form name="categoryForm">
-            <md-input-container class="md-block" ng-show="!editBookmark && categories.length > 1 && !items.categoryId">
+            <md-input-container class="md-block" ng-show="!editBookmark && categories.length > 1 && !addBookmark">
                 <label>Select category Name</label>
                 
-                <md-select ng-model="category.selectedCategory" ng-change="selectCategory()">
-                    <md-option ng-repeat="c in categories track by $index" ng-value="{{c}}">
+                <md-select ng-model="category.categoryId" ng-change="selectCategory()">
+                    <md-option ng-repeat="c in categories track by $index" ng-value="c._id">
                         {{c.category_type}}
                     </md-option>
                 </md-select>                
             </md-input-container>
             
-            <md-input-container class="md-block" ng-show="categories.length < 2 || (category.selectedCategory._id == '0' && !editBookmark)">    
+            <md-input-container class="md-block" ng-show="categories.length < 2 || (category.categoryId == '0' && !editBookmark)">    
                 <label>Custom category Name</label>        
                 <input md-maxlength="30" name="categoryName" ng-model="category.categoryName">
                 <div ng-messages="categoryForm.categoryName.$error">

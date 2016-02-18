@@ -10,9 +10,15 @@
         <md-card>
             <md-card-title class="bookmark-heading">
                 <md-card-title-text layout="row" style="position:relative;">
+                    <div flex="10">
+                        <span ng-click="vm.openCategoryModal($event, false, c._id)" class="bk-del-icon">
+                            <i style="margin-top: 10px;" class="material-icons md-light md-24">add</i>
+                        </span>
+                     </div>
+                    
                     <div flex="90"><h2 class="md-headline">{{c.category_type | uppercase}} </h2></div>
                     
-                     <!--<span ng-click="vm.openCategoryModal($event, false, c._id)" class="bk-add-icon"><i class="material-icons md-light md-24">add</i></span>-->
+                     
                      <div flex="10">
                         <span ng-click="vm.deleteCategory(c._id)" class="bk-del-icon">
                             <i style="margin-top: 10px;" class="material-icons md-light md-24">clear</i>
