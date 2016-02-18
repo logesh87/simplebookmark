@@ -26,11 +26,13 @@
                      </div>
                 </md-card-title-text>
             </md-card-title>
-            <md-card-content ng-repeat="b in c.bookmarks">            
-                <p> 
-                    <a target="_blank" ng-href="{{b.uri}}">{{b.name | uppercase}}</a> 
+            <md-card-content layout="row" ng-repeat="b in c.bookmarks">            
+                <div flex="80"> 
+                    <a target="_blank" ng-href="{{b.uri}}">{{b.name | uppercase}}</a>
+                </div>
+                <div flex="20">     
                     <span class="bk_pointer" ng-click="vm.openCategoryModal($event, b)"> <md-icon>edit</md-icon></span>  <span class="bk_pointer" ng-click="vm.deleteBookmark(c._id, b._id)"><md-icon>delete</md-icon></span>
-                </p>
+                </div>
             </md-card-content>
         </md-card>
     </div>
