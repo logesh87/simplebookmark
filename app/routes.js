@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//var Bookmark = require('./models/category.js');
 var Bookmark = require('./models/bookmark.js');
 
 
