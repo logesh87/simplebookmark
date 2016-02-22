@@ -1,4 +1,5 @@
-angular.module('app')
+(function(){
+    angular.module('app')
 	.factory('BookmarkFactory', function ($http) {					
 		return {
 			getBookmarks: function(){
@@ -58,4 +59,5 @@ angular.module('app')
 			}
 			
 		};
-	})
+	})    
+})();
