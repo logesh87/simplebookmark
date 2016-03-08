@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-//var Category = require('./category.js');
 var Schema = mongoose.Schema;
 
 var BookmarkSchema = new Schema({
