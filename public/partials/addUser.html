@@ -1,0 +1,39 @@
+<md-content class="md-padding" flex layout="row" layout-align="center center">
+    <form flex="40" name="signupForm">
+
+        <md-input-container class="md-block">
+            <label>Email</label>
+            <input type="email" required name="email" ng-model="vm.user.email">
+            <div ng-messages="signupForm.email.$error">
+                <div ng-message="required">Please enter the email.</div>
+                <div ng-message="email">Please enter a valid email.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Password</label>
+
+            <input  required type="password" name="password" required ng-model="vm.user.password" />
+
+            <div ng-messages="signupForm.password.$error" role="alert">
+                <div ng-message="required">Please enter the password.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <label>Confirm password</label>
+
+            <input password-match="vm.user.password" required type="password" name="confirmPassword" required ng-model="vm.user.confirmPassword" />
+
+            <div ng-messages="signupForm.confirmPassword.$error" role="alert">
+                <div ng-message="compareTo">Password must match.</div>
+            </div>
+        </md-input-container>
+
+        <md-input-container class="md-block">
+            <md-button class="md-raised md-primary" ng-disabled="signupForm.$invalid" ng-click="vm.signup()"> Signup </md-button>
+        </md-input-container>
+
+    </form>
+
+</md-content>

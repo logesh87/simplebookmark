@@ -1,0 +1,62 @@
+<md-dialog style="width:50%;" aria-label="Create Category" ng-cloak>
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Create new category</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="cancel()">
+                <md-icon aria-label="Close dialog">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content class="md-padding">
+        <form name="categoryForm">
+            <md-input-container class="md-block" ng-show="!editBookmark && categories.length > 1 && !addBookmark">
+                <label>Select category Name</label>
+                
+                <md-select ng-model="category.categoryId" ng-change="selectCategory()">
+                    <md-option ng-repeat="c in categories track by $index" ng-value="c._id">
+                        {{c.category_type}}
+                    </md-option>
+                </md-select>                
+            </md-input-container>
+            
+            <md-input-container class="md-block" ng-show="categories.length < 2 || (category.categoryId == '0' && !editBookmark)">    
+                <label>Custom category Name</label>        
+                <input md-maxlength="30" name="categoryName" ng-model="category.categoryName">
+                <div ng-messages="categoryForm.categoryName.$error">
+                    <!--<div ng-message="required">This is required.</div>-->
+                    <div ng-message="md-maxlength">The category name has to be less than 30 characters long.</div>
+                </div>
+            </md-input-container>
+                
+            <md-input-container class="md-block">
+                <label>Bookmark Name</label>
+                <input required name="bookmarkName" ng-model="category.bookmarkName">
+                <div ng-messages="categoryForm.bookmarkName.$error">
+                    <div ng-message="required">Please enter the bookmark name.</div>
+                </div>
+            </md-input-container>
+            <md-input-container class="md-block">
+                <label>URI</label>
+                  
+                <input required type="text" name="uri" ng-pattern="/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/" required  ng-model="category.uri" />
+            
+                 <div ng-messages="categoryForm.uri.$error" role="alert">
+                    <div ng-message-exp="['required','pattern']">
+                        Please enter a valid URI
+                    </div>
+                </div> 
+            </md-input-container> 
+
+            <md-input-container class="md-block">       
+                 <md-button class="md-raised md-primary" ng-disabled="categoryForm.$invalid" ng-click="save(category)"> Save </md-button> 
+            </md-input-container>
+          </form>
+    </md-dialog-content>
+    <md-dialog-actions layout="row">
+        <span flex></span>   
+        <md-button class="md-raised md-primary" ng-click="cancel('cancel')" style="margin-right:20px;">
+            cancel
+        </md-button>
+    </md-dialog-actions>
+</md-dialog>
