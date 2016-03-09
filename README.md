@@ -5,7 +5,7 @@ A simple bookmarking app developed using MEAN stack
 
 Run "npm install webpack webpack-dev-server -g"
 
-Run "npm install", "bower install"
+Run "npm install"
 
 Run "webpack" to bundle the files
 
