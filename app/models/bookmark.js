@@ -15,7 +15,9 @@ var BookmarkSchema = new Schema({
 				message:"Not a valid uri!"
 			},
 			required: true 
-		}
+		},
+        favicon:{type: String },
+        resetFavicon:{type: Boolean, default:true}
 	}],
 	created_at: {type: Date, default: Date.now},
     updated_at: {type: Date, default: Date.now}

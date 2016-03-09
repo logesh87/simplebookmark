@@ -9,26 +9,26 @@
         </div>
     </md-toolbar>
     <md-dialog-content class="md-padding">
-        <form name="categoryForm">
+        <form ng-submit="save()" name="categoryForm">
             <md-input-container class="md-block" ng-show="!editBookmark && categories.length > 1 && !addBookmark">
                 <label>Select category Name</label>
-                
+
                 <md-select ng-model="category.categoryId" ng-change="selectCategory()">
                     <md-option ng-repeat="c in categories track by $index" ng-value="c._id">
                         {{c.category_type}}
                     </md-option>
-                </md-select>                
+                </md-select>
             </md-input-container>
-            
-            <md-input-container class="md-block" ng-show="categories.length < 2 || (category.categoryId == '0' && !editBookmark)">    
-                <label>Custom category Name</label>        
+
+            <md-input-container class="md-block" ng-show="categories.length < 2 || (category.categoryId == '0' && !editBookmark)">
+                <label>Custom category Name</label>
                 <input md-maxlength="30" name="categoryName" ng-model="category.categoryName">
                 <div ng-messages="categoryForm.categoryName.$error">
                     <!--<div ng-message="required">This is required.</div>-->
                     <div ng-message="md-maxlength">The category name has to be less than 30 characters long.</div>
                 </div>
             </md-input-container>
-                
+
             <md-input-container class="md-block">
                 <label>Bookmark Name</label>
                 <input required name="bookmarkName" ng-model="category.bookmarkName">
@@ -38,23 +38,82 @@
             </md-input-container>
             <md-input-container class="md-block">
                 <label>URI</label>
-                  
-                <input required type="text" name="uri" ng-pattern="/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/" required  ng-model="category.uri" />
-            
-                 <div ng-messages="categoryForm.uri.$error" role="alert">
+
+                <input required type="text" name="uri" ng-pattern="/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/" required
+                ng-model="category.uri" />
+
+                <div ng-messages="categoryForm.uri.$error" role="alert">
                     <div ng-message-exp="['required','pattern']">
                         Please enter a valid URI
                     </div>
-                </div> 
-            </md-input-container> 
-
-            <md-input-container class="md-block">       
-                 <md-button class="md-raised md-primary" ng-disabled="categoryForm.$invalid" ng-click="save(category)"> Save </md-button> 
+                </div>
             </md-input-container>
-          </form>
+
+            <md-input-container>
+                <label for="pictures">Change favicon</label>
+                <input id="pictures" label="Upload Images" name="file"  ngf-pattern="'image/*'" ngf-accept="'image/*'" 
+                ngf-select ng-model="category.favicon" accept="image/*"
+                ngf-max-size="100KB" ngf-validate="{width: {min: 16, max:32}, height: {min: 16, max: 32}}">
+                <div ng-messages="categoryForm.file.$error">
+                    <div ng-message="maxWidth">
+                        Max Width has to be 32.
+                    </div>
+                    <div ng-message="maxHeight">
+                        Max height has to be 32.
+                    </div>
+
+                    <div ng-message="maxSize">
+                        File is bigger than 100KB.
+                    </div>
+
+                </div>
+            </md-input-container>
+
+
+
+
+
+            <!--<md-input-container>
+
+                <div layout="row" flex="100">
+                    <div flex="30">
+                        <img ng-show="category.resetFavicon" ng-src="{{category.uri | favicon}}" alt="">
+                        <img alt="thumb" ng-hide="category.resetFavicon" ngf-src="category.favicon" ngf-no-object-url="true" class="thumb">
+                    </div>
+                    <div flex="70">
+                        <div class="button" ngf-select ng-model="category.favicon" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="100KB"
+                        ngf-max-height="25" ngf-max-width="25">Change favicon</div>
+                    </div>
+                </div>
+
+
+                <div ng-messages="categoryForm.file.$error">
+                    <div ng-message="maxWidth">
+                        Max Width has to be 25.
+                    </div>
+                    <div ng-message="maxHeight">
+                        Max height has to be 25.
+                    </div>
+
+                    <div ng-message="maxSize">
+                        File is bigger than 100KB.
+                    </div>
+
+                </div>
+            </md-input-container>-->
+
+            <md-input-container class="md-block">
+                <md-checkbox ng-model="category.resetFavicon">Reset Favicon</md-checkbox>
+            </md-input-container>
+
+
+            <md-input-container class="md-block">
+                <md-button class="md-raised md-primary" type="submit" ng-disabled="categoryForm.$invalid"> Save </md-button>
+            </md-input-container>
+        </form>
     </md-dialog-content>
     <md-dialog-actions layout="row">
-        <span flex></span>   
+        <span flex></span>
         <md-button class="md-raised md-primary" ng-click="cancel('cancel')" style="margin-right:20px;">
             cancel
         </md-button>

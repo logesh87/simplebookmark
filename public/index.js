@@ -5,12 +5,16 @@ var app = angular.module('app', [
     require('angular-material'), 
     require('angular-messages'), 
     require('angular-loading-bar'), 
-    require('satellizer')
+    require('satellizer'),
+    require('ng-file-upload')   
 ]);
+
+
 
 
 app.config(require('./config'));
 app.factory('BookmarkFactory', require('./services/BookmarkService.js'));
+app.filter('favicon', require('./filters/faviconFilter.js'));
 app.directive('passwordMatch', require('./directives/PasswordMatch.js'));
 app.controller('MainCtrl', require('./controllers/MainController.js'));
 app.controller('AdduserCtrl', require('./controllers/AdduserController.js'));

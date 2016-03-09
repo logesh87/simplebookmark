@@ -1,11 +1,14 @@
-var mongoose = require('mongoose');
-var Bookmark = require('./models/bookmark.js');
-var User = require('./models/user.js');
-var moment = require('moment');
-var jwt = require('jwt-simple');
-
-
+var mongoose = require('mongoose'),
+    Bookmark = require('./models/bookmark.js'),
+    User = require('./models/user.js'),
+    moment = require('moment'),
+    jwt = require('jwt-simple'),
+    multer = require('multer'),
+    fs = require('fs');
 module.exports = function (app) {
+    
+
+ 
 
     //Authentication middleware 
     function ensureAuthenticated(req, res, next) {
@@ -63,53 +66,98 @@ module.exports = function (app) {
     //Add a new category with a bookmark
     app.post('/bookmark', ensureAuthenticated, function (req, res) {
 
-        var bookmark = new Bookmark(req.body);
-        bookmark.category_type = req.body.category_type;
-        bookmark.bookmarks.push(req.body.bookmark);
-
-        bookmark.save(function (err) {
+        upload(req, res, function (err) {
             if (err) {
-                res.send(err);
-            }
-            res.json(req.body);
-        });
-
-    });
-
-    //Update a bookmark
-    app.put('/update_bookmark', ensureAuthenticated, function (req, res) {
-        Bookmark.update({ 'bookmarks._id': req.body.bookmarkId }, {
-            '$set': {
-                'bookmarks.$.name': req.body.bookmarkName,
-                'bookmark.$.uri': req.body.uri
-
-            }
-        }, function (err, data) {
-            if (err) {
-                res.send(err);
-            }
-            res.json(data);
-        });
-    });
-
-    //Add a bookmrk to an existing category
-    app.put('/bookmark', ensureAuthenticated, function (req, res) {
-
-        Bookmark.findById(req.body.id, function (err, bookmark) {
-            if (err) {
-                res.send(err);
+                console.log(err);
+                return
             }
 
-            bookmark.bookmarks.push(req.body.bookmark);
+            var form = {
+                body: req.body,
+                file: req.file
+            }
 
-            bookmark.save(function (err) {
+            var file = form.file, filePath = "", fileB64 = "";
+
+            if (file) {
+                filePath = file.path + "." + file.mimetype.split("/")[1];
+                console.log(file.originalName);
+                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
+                fs.unlink(req.file.path);
+            }
+
+            var bookmarkCat = new Bookmark();
+            bookmarkCat.category_type = req.body.category_type;
+            
+            var bookmark = {
+                name : form.body.bookmarkName,
+                uri : form.body.bookmarkUri,
+                favicon : fileB64,
+                resetFavicon: form.body.resetFavicon   
+            }
+            bookmarkCat.bookmarks.push(bookmark);
+            
+            
+            bookmarkCat.save(function (err) {
                 if (err) {
                     res.send(err);
                 }
-
-                res.json({ message: 'Bookmark updated' });
+                res.json(req.body);
             });
+
         });
+
+    });
+
+    app.post('/bookmark_with_cat', ensureAuthenticated, function (req, res) {
+        
+         upload(req, res, function (err) {
+            if (err) {
+                console.log(err);
+                return
+            }
+
+            var form = {
+                body: req.body,
+                file: req.file
+            }
+
+            var file = form.file, filePath = "", fileB64 = "";
+
+            if (file) {
+                filePath = file.path + "." + file.mimetype.split("/")[1];
+                console.log(file.originalName);
+                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
+                fs.unlink(req.file.path);
+            }
+
+            
+            Bookmark.findById(form.body.categoryId, function (err, result) {
+                console.log(result);
+                if (err) {
+                    res.send(err);
+                }
+                
+                 var bookmark = {
+                    name : form.body.bookmarkName,
+                    uri : form.body.bookmarkUri,
+                    favicon : fileB64,
+                    resetFavicon: form.body.resetFavicon
+                }
+
+                result.bookmarks.push(bookmark);
+
+                result.save(function (err) {
+                    if (err) {
+                        res.send(err);
+                    }
+
+                    res.json({ message: 'Bookmark updated' });
+                });
+            });
+
+        })
+
 
 
     });
@@ -183,6 +231,96 @@ module.exports = function (app) {
             });
         });
     });
+
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, __dirname + '/uploads/')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now())
+        }
+    })
+
+    var upload = multer({ storage: storage }).single('file');
+
+    app.post('/updateBookmark', ensureAuthenticated, function (req, res) {
+
+        upload(req, res, function (err) {
+            if (err) {
+                console.log(err);
+                return
+            }
+
+            var form = {
+                body: req.body,
+                file: req.file
+            }
+
+            var file = form.file, filePath = "", fileB64 = "";
+
+            if (file) {
+                filePath = file.path + "." + file.mimetype.split("/")[1];
+                console.log(file.originalName);
+                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
+                fs.unlink(req.file.path);
+            }
+
+
+            Bookmark.update({ 'bookmarks._id': form.body.bookmarkId }, {
+                '$set': {
+                    'bookmarks.$.name': form.body.bookmarkName,
+                    'bookmarks.$.uri': form.body.bookmarkUri,
+                    'bookmarks.$.favicon': fileB64,
+                    'bookmarks.$.resetFavicon': form.body.resetFavicon
+                }
+            }, function (err, data) {
+                if (err) {
+                    res.send(err);
+                }
+                res.json(data);
+            });
+
+          
+
+            // if (filedata && require('fs').statSync(filedata.path).isFile()) {
+            //     return res.status(200).send('OK')
+            // }
+            // else {
+            //     return res.status(404).send("File not found")
+            // }
+
+        });
+
+    });
+   
+    
+    //     var storage = multer.diskStorage({ //multers disk storage settings
+    //         destination: function (req, file, cb) {
+    //             cb(null, './uploads/')
+    //         },
+    //         filename: function (req, file, cb) {
+    //             var datetimestamp = Date.now();
+    //             cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+    //         }
+    //     });
+    //     
+    //     var upload = multer({ //multer settings
+    //                     storage: storage
+    //                 }).single('file');
+    // 
+    // 
+    // 
+    //     app.post('/favicon', function(req, res) {
+    //         upload(req,res,function(err){
+    //             if(err){
+    //                  res.json({error_code:1,err_desc:err});
+    //                  return;
+    //             }
+    //              res.json({error_code:0,err_desc:null});
+    //         })
+    //        
+    //     });
+    
 
 
 };

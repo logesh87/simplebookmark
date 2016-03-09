@@ -1,4 +1,4 @@
-module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory) {
+module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload) {
     var vm = this;
     vm.bookmarkList = [];
     vm.categories = [];
@@ -23,14 +23,23 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory) {
             })
     };
 
-    vm.updateBookmark = function (bookmark) {
-        BookmarkFactory.updateBookmark(bookmark)
-            .then(function (res) {
-                vm.getBookmarks();
-                console.log(res.data);
-            }, function (res) {
-                console.log(res);
-            })
+    vm.updateBookmark = function (bookmark) {    
+        Upload.upload({
+            url: '/updateBookmark', //webAPI exposed to upload the file                
+            data: { file: bookmark.favicon, 
+                bookmarkId: bookmark.bookmarkId, bookmarkName: bookmark.bookmarkName, 
+                bookmarkUri: bookmark.uri, resetFavicon: bookmark.resetFavicon                
+            } 
+        }).then(function (resp) { //upload function returns a promise
+            console.log(resp);
+            vm.getBookmarks();                         
+        }, function (resp) { //catch error
+            console.log('Error status: ' + resp.status);
+            console.log('Error status: ' + resp.status);
+        }, function (evt) {
+            console.log(evt);
+            var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);          
+        });
     };
 
     vm.deleteBookmark = function (cid, bid) {
@@ -68,43 +77,41 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory) {
     vm.getCategories();
 
     vm.saveBookmark = function (category) {
-        var data;
-
         if (category.categoryId && category.categoryId != "0") {
+            Upload.upload({
+                url: '/bookmark_with_cat', //webAPI exposed to upload the file                
+                data: { file: category.favicon, categoryId: category.categoryId, bookmarkId: category.bookmarkId, 
+                bookmarkName: category.bookmarkName, bookmarkUri: category.uri, resetFavicon: category.resetFavicon },                
+            }).then(function (resp) { //upload function returns a promise
+                console.log(resp);
+                vm.getBookmarks();
+            }, function (resp) { //catch error
+                console.log('Error status: ' + resp.status);
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                console.log(evt);
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);                                
+            });
 
-            data = {
-                "id": category.categoryId,
-                "bookmark": {
-                    "name": category.bookmarkName,
-                    "uri": category.uri
-                }
-            };
-
-            BookmarkFactory.updateBookmarkWithCategory(data)
-                .then(function (res) {
-                    console.log(res);
-                    vm.getBookmarks();
-                }, function (res) {
-                    console.log(res);
-                });
 
         } else {
-            data = {
-                "category_type": category.categoryName,
-                "bookmark": {
-                    "name": category.bookmarkName,
-                    "uri": category.uri
-                }
-            };
 
-            BookmarkFactory.postBookmark(data)
-                .then(function (res) {
-                    console.log(res);
-                    vm.getBookmarks();
-                    vm.getCategories();
-                }, function (res) {
-                    console.log(res);
-                });
+            Upload.upload({
+                url: '/bookmark', //webAPI exposed to upload the file                
+                data: { file: category.favicon, category_type: category.categoryName, bookmarkName: category.bookmarkName, 
+                bookmarkUri: category.uri, resetFavicon: category.resetFavicon }
+            }).then(function (resp) { //upload function returns a promise
+                console.log(resp);
+                vm.getBookmarks();
+                vm.getCategories();
+            }, function (resp) { //catch error
+                console.log('Error status: ' + resp.status);
+                console.log('Error status: ' + resp.status);
+            }, function (evt) {
+                console.log(evt);
+                var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);               
+            });
+
         }
 
 
@@ -140,7 +147,7 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory) {
 
 }
 
-function DialogController($scope, $mdDialog, items) {
+function DialogController($scope, $mdDialog, items, Upload, $window) {
 
     if (items.bookmark) {
         $scope.editBookmark = true;
@@ -152,6 +159,8 @@ function DialogController($scope, $mdDialog, items) {
         $scope.category.bookmarkId = items.bookmark._id;
         $scope.category.bookmarkName = items.bookmark.name;
         $scope.category.uri = items.bookmark.uri;
+        $scope.category.favicon = items.bookmark.favicon;
+        //$scope.category.resetFavicon = items.bookmark.resetFavicon;
         console.log($scope.selectedBookmark);
     } else if (items.categoryId) {
         $scope.addBookmark = true;
@@ -169,17 +178,18 @@ function DialogController($scope, $mdDialog, items) {
     $scope.answer = function (answer) {
         $mdDialog.hide(answer);
     };
-
-    $scope.save = function (data) {
+    
+    
+    $scope.save = function () {
         if ($scope.editBookmark) {
             items.updateBookmark($scope.category)
         } else {
 
             if (items.categoryId) {
-                data.categoryId = items.categoryId
+                $scope.category.categoryId = items.categoryId
             }
 
-            items.saveBookmark(data);
+            items.saveBookmark($scope.category);
         }
 
         $mdDialog.hide();

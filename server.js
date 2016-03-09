@@ -1,32 +1,40 @@
-var express         = require('express');
-var mongoose        = require('mongoose');
-var qs 				= require('querystring');
-var cors 			= require('cors');
-var colors 			= require('colors');
-var morgan          = require('morgan');
-var bodyParser      = require('body-parser');
-var methodOverride  = require('method-override');
-var request 		= require('request');
-var cors            = require('cors');
-var app             = express();
+var express = require('express'),
+    mongoose = require('mongoose'),
+    qs = require('querystring'),
+    cors = require('cors'),
+    colors = require('colors'),
+    morgan = require('morgan'),
+    bodyParser = require('body-parser'),
+    methodOverride = require('method-override'),
+    request = require('request'),
+    cors = require('cors'),
+    app = express(),
+    port = process.env.PORT || 5000,
+    db = require('./config/db'),
+    mongoose = require('mongoose')
 
-var port            = process.env.PORT || 5000;
-var db = require('./config/db');
+
 mongoose.connect(db.url);
 
- 
-app.use(express.static(__dirname + '/public'));                 
+app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/app/uploads'));
 
-app.use(morgan('dev'));                                         
-app.use(bodyParser.json());                                     
-app.use(bodyParser.urlencoded({extended: true}));               
-app.use(bodyParser.text());                                     
-app.use(bodyParser.json({ type: 'application/vnd.api+json'}));  
+
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "http://localhost");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.text());
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
 
-require('./app/routes')(app); 
+require('./app/routes')(app);
 
 
-app.listen(port);	
-console.log('Listening on ' + port); 			
+app.listen(port);
+console.log('Listening on ' + port);
 exports = module.exports = app; 						
