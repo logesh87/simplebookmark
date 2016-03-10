@@ -1,3 +1,4 @@
+/*@ngInject*/ 
 module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload) {
     var vm = this;
     vm.bookmarkList = [];
@@ -147,6 +148,7 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
 
 }
 
+/*@ngInject*/ 
 function DialogController($scope, $mdDialog, items, Upload, $window) {
 
     if (items.bookmark) {
@@ -158,7 +160,8 @@ function DialogController($scope, $mdDialog, items, Upload, $window) {
         };
         $scope.category.bookmarkId = items.bookmark._id;
         $scope.category.bookmarkName = items.bookmark.name;
-        $scope.category.uri = items.bookmark.uri;        
+        $scope.category.uri = items.bookmark.uri;
+        $scope.category.favicon = items.bookmark.favicon;
         //$scope.category.resetFavicon = items.bookmark.resetFavicon;
         console.log($scope.selectedBookmark);
     } else if (items.categoryId) {

@@ -1,4 +1,4 @@
-
+/*@ngInject*/ 
 module.exports = function ($mdToast) {
     return {
         showToast: function (msg, type) {

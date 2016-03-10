@@ -1,10 +1,14 @@
-var gulp = require('gulp');
-var webpack = require('webpack-stream');
-var path = require('path');
-var clean = require('gulp-clean');
-var rename = require('gulp-rename');
-//var webpack = require('webpack');
-var ngAnnotatePlugin = require('ng-annotate-webpack-plugin');
+var
+    gulp = require('gulp'),
+    clean = require('gulp-clean'),
+    browserify = require('browserify'),
+    buffer = require('vinyl-buffer'),
+    rename = require('gulp-rename'),
+    cssmin = require('gulp-cssmin'),
+    source = require('vinyl-source-stream'),
+    ngAnnotate = require('gulp-ng-annotate'),
+    uglify = require('gulp-uglify'),
+    concat = require('gulp-concat');
 
 
 var PATHS = {
@@ -17,35 +21,21 @@ gulp.task('clean', function () {
         .pipe(clean());
 });
 
-gulp.task('webpack', function () {
-    return gulp.src(PATHS.app + "/index.js")
-        .pipe(webpack({
-            watch: true,
-            resolve: {
-                alias: {
-                    ngmaterial: __dirname + "/node_modules/angular-material/angular-material.css",
-                    ngloadingbar: __dirname + "/node_modules/angular-loading-bar/src/loading-bar.css",
-                    maincss: __dirname + "/public/css/main.css"
-                }
-            },
-            module: {
-                loaders: [                    
-                    { test: /\.css$/, loader: 'style!css' }               
-                ]
-            },            
-            plugins: [
-                new ngAnnotatePlugin({add: true}),
-                //new webpack.webpack.optimize.UglifyJsPlugin({ minimize: true })
-                
-            ],
-            //devtool: 'source-map',
-            output: {
-                filename: 'bundle.js',
-            },
-        }))
-        //.pipe(rename('bundle.min.js'))
-        .pipe(gulp.dest(PATHS.app + "/dist"));
+gulp.task('css', function(){
+    gulp.src(PATHS.app +'/css/*.css')
+		.pipe(cssmin())
+        .pipe(concat('style.min.css'))		
+		.pipe(gulp.dest(PATHS.app + "/dist")); 
+})
 
+gulp.task('build', function() {
+  return browserify(PATHS.app + "/index.js")
+    .bundle()
+    .pipe(source('bundle.min.js'))
+    .pipe(buffer())
+    .pipe(ngAnnotate())
+    .pipe(uglify())
+    .pipe(gulp.dest(PATHS.app + "/dist"));  
 });
 
-gulp.task('default', ['clean', 'webpack']);
+gulp.task('default', ['clean', 'css','build']);

@@ -10,8 +10,6 @@ var app = angular.module('app', [
 ]);
 
 
-
-
 app.config(require('./config'));
 app.factory('BookmarkFactory', require('./services/BookmarkService.js'));
 app.factory('ToastService', require('./services/ToastService.js'));

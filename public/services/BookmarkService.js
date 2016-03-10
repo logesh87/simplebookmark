@@ -1,3 +1,4 @@
+/*@ngInject*/ 
 module.exports = function ($http) {
     return {
         getBookmarks: function () {

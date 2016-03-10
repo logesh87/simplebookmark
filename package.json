@@ -4,7 +4,8 @@
   "description": "A simple bookmarking app developed using MEAN stack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "postinstall": "gulp default"
   },
   "repository": {
     "type": "git",
@@ -50,17 +51,17 @@
     "satellizer": "^0.14.0"
   },
   "devDependencies": {
-    "css-loader": "^0.23.1",
+    "browserify-css": "^0.9.0",
     "gulp": "^3.9.1",
+    "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.3.2",
+    "gulp-concat": "^2.6.0",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-ng-annotate": "^2.0.0",
     "gulp-rename": "^1.2.2",
-    "jshint": "2.8.0",
-    "jshint-loader": "0.8.3",
-    "ng-annotate-loader": "^0.1.0",
-    "ng-annotate-webpack-plugin": "^0.1.2",
+    "gulp-uglify": "^1.5.3",
     "style-loader": "^0.13.0",
-    "webpack": "1.12.11",
-    "webpack-dev-server": "1.14.1",
-    "webpack-stream": "^3.1.0"
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }

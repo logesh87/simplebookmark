@@ -1,3 +1,4 @@
+/*@ngInject*/ 
 module.exports = function ($scope, $location, $auth, ToastService) {
     var vm = this;
     vm.signup = function () {

@@ -1,4 +1,5 @@
 
+/*@ngInject*/ 
 module.exports = function ($stateProvider, $urlRouterProvider, $authProvider) {
 
     $urlRouterProvider.otherwise("/home");

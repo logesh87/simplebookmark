@@ -1,3 +1,4 @@
+/*@ngInject*/
 module.exports = function ($location, $auth) {
     if (!$auth.isAuthenticated()) { return; }
     $auth.logout()
