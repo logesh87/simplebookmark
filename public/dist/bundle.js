@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "5c82b066b9a7cc7982bc"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "aceb4d29f5f51c6dba1a"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -70391,8 +70391,7 @@
 	        };
 	        $scope.category.bookmarkId = items.bookmark._id;
 	        $scope.category.bookmarkName = items.bookmark.name;
-	        $scope.category.uri = items.bookmark.uri;
-	        $scope.category.favicon = items.bookmark.favicon;
+	        $scope.category.uri = items.bookmark.uri;        
 	        //$scope.category.resetFavicon = items.bookmark.resetFavicon;
 	        console.log($scope.selectedBookmark);
 	    } else if (items.categoryId) {

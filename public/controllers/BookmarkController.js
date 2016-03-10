@@ -158,8 +158,7 @@ function DialogController($scope, $mdDialog, items, Upload, $window) {
         };
         $scope.category.bookmarkId = items.bookmark._id;
         $scope.category.bookmarkName = items.bookmark.name;
-        $scope.category.uri = items.bookmark.uri;
-        $scope.category.favicon = items.bookmark.favicon;
+        $scope.category.uri = items.bookmark.uri;        
         //$scope.category.resetFavicon = items.bookmark.resetFavicon;
         console.log($scope.selectedBookmark);
     } else if (items.categoryId) {

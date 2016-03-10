@@ -51,9 +51,10 @@
 
             <md-input-container>
                 <label for="pictures">Change favicon</label>
-                <input id="pictures" label="Upload Images" name="file"  ngf-pattern="'image/*'" ngf-accept="'image/*'" 
+                <input id="pictures" label="Upload Images" name="file"  ngf-pattern="'image/png,image/ico'"
                 ngf-select ng-model="category.favicon" accept="image/*"
                 ngf-max-size="100KB" ngf-validate="{width: {min: 16, max:32}, height: {min: 16, max: 32}}">
+                <img ng-show="myForm.file.$valid" ngf-thumbnail="category.favicon" class="thumb">
                 <div ng-messages="categoryForm.file.$error">
                     <div ng-message="maxWidth">
                         Max Width has to be 32.
