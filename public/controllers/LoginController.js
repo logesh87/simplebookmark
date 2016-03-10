@@ -1,4 +1,4 @@
-module.exports = function ($scope, $location, $auth) {
+module.exports = function ($scope, $location, $auth, ToastService) {
     var vm = this;
 
     vm.login = function () {
@@ -8,6 +8,7 @@ module.exports = function ($scope, $location, $auth) {
                 $location.path('/');
             })
             .catch(function (error) {
+                ToastService.showToast(error.data.message);
                 console.log(error.data.message, error.status);
             });
     };

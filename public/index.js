@@ -14,6 +14,7 @@ var app = angular.module('app', [
 
 app.config(require('./config'));
 app.factory('BookmarkFactory', require('./services/BookmarkService.js'));
+app.factory('ToastService', require('./services/ToastService.js'));
 app.filter('favicon', require('./filters/faviconFilter.js'));
 app.directive('passwordMatch', require('./directives/PasswordMatch.js'));
 app.controller('MainCtrl', require('./controllers/MainController.js'));

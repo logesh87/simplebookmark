@@ -8,8 +8,6 @@ var mongoose = require('mongoose'),
 module.exports = function (app) {
     
 
- 
-
     //Authentication middleware 
     function ensureAuthenticated(req, res, next) {
         if (!req.header('Authorization')) {

@@ -11,32 +11,7 @@ module.exports = function ($http) {
                 method: 'GET',
                 url: '/categories',
             });
-        },
-        postBookmark: function (bookmark) {
-            return $http({
-                url: '/bookmark',
-                method: 'POST',
-                data: bookmark
-
-            });
-
-        },
-        updateBookmark: function (bookmark) {
-            return $http({
-                method: 'PUT',
-                url: '/update_bookmark',
-                data: bookmark
-            });
-
-        },
-        updateBookmarkWithCategory: function (bookmark) {
-            return $http({
-                method: 'PUT',
-                url: '/bookmark',
-                data: bookmark
-            });
-
-        },
+        },      
         deleteBookmark: function (data) {
             return $http({
                 method: 'DELETE',

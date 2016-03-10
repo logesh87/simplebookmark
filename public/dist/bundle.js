@@ -54,7 +54,7 @@
 /******/ 	
 /******/ 	
 /******/ 	var hotApplyOnUpdate = true;
-/******/ 	var hotCurrentHash = "9cc0baee79b65529de61"; // eslint-disable-line no-unused-vars
+/******/ 	var hotCurrentHash = "5c82b066b9a7cc7982bc"; // eslint-disable-line no-unused-vars
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentParents = []; // eslint-disable-line no-unused-vars
 /******/ 	
@@ -672,13 +672,14 @@
 
 	app.config(__webpack_require__(20));
 	app.factory('BookmarkFactory', __webpack_require__(21));
-	app.filter('favicon', __webpack_require__(22));
-	app.directive('passwordMatch', __webpack_require__(23));
-	app.controller('MainCtrl', __webpack_require__(24));
-	app.controller('AdduserCtrl', __webpack_require__(33));
-	app.controller('BookmarkCtrl', __webpack_require__(34));
-	app.controller('LoginCtrl', __webpack_require__(35));
-	app.controller('LogoutCtrl', __webpack_require__(36));
+	app.factory('ToastService', __webpack_require__(22));
+	app.filter('favicon', __webpack_require__(23));
+	app.directive('passwordMatch', __webpack_require__(24));
+	app.controller('MainCtrl', __webpack_require__(25));
+	app.controller('AdduserCtrl', __webpack_require__(34));
+	app.controller('BookmarkCtrl', __webpack_require__(35));
+	app.controller('LoginCtrl', __webpack_require__(36));
+	app.controller('LogoutCtrl', __webpack_require__(37));
 
 	angular.element(document).ready(function () {
 	  angular.bootstrap(document, ['app']);
@@ -69679,32 +69680,7 @@
 	                method: 'GET',
 	                url: '/categories',
 	            });
-	        },
-	        postBookmark: function (bookmark) {
-	            return $http({
-	                url: '/bookmark',
-	                method: 'POST',
-	                data: bookmark
-
-	            });
-
-	        },
-	        updateBookmark: function (bookmark) {
-	            return $http({
-	                method: 'PUT',
-	                url: '/update_bookmark',
-	                data: bookmark
-	            });
-
-	        },
-	        updateBookmarkWithCategory: function (bookmark) {
-	            return $http({
-	                method: 'PUT',
-	                url: '/bookmark',
-	                data: bookmark
-	            });
-
-	        },
+	        },      
 	        deleteBookmark: function (data) {
 	            return $http({
 	                method: 'DELETE',
@@ -69731,6 +69707,26 @@
 /* 22 */
 /***/ function(module, exports) {
 
+	
+	module.exports = function ($mdToast) {
+	    return {
+	        showToast: function (msg, type) {
+	            $mdToast.show({
+	                template: '<md-toast class="md-toast error">' + msg + '</md-toast>',
+	                hideDelay: 2000,
+	                position: 'bottom right left'                                
+	            });             
+	        }
+	    }
+	}
+
+
+
+
+/***/ },
+/* 23 */
+/***/ function(module, exports) {
+
 	module.exports = function() {
 		var provider = "https://www.google.com/s2/favicons?domain=%s";
 
@@ -69741,7 +69737,7 @@
 
 
 /***/ },
-/* 23 */
+/* 24 */
 /***/ function(module, exports) {
 
 	module.exports = function () {
@@ -69764,37 +69760,40 @@
 
 
 /***/ },
-/* 24 */
+/* 25 */
 /***/ function(module, exports, __webpack_require__) {
 
-	__webpack_require__(25);
-	__webpack_require__(29);
-	__webpack_require__(31);
-	module.exports = function ($scope, $auth) {
+	__webpack_require__(26);
+	__webpack_require__(30);
+	__webpack_require__(32);
+	module.exports = function ($scope, $auth, $mdToast) {
 	    $scope.isAuthenticated = function () {
 	        return $auth.isAuthenticated();
 	    };
+
+	 
+
 	};
 	    
 
 /***/ },
-/* 25 */
+/* 26 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(26);
+	var content = __webpack_require__(27);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(28)(content, {});
+	var update = __webpack_require__(29)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(26, function() {
-				var newContent = __webpack_require__(26);
+			module.hot.accept(27, function() {
+				var newContent = __webpack_require__(27);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -69804,10 +69803,10 @@
 	}
 
 /***/ },
-/* 26 */
+/* 27 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(27)();
+	exports = module.exports = __webpack_require__(28)();
 	// imports
 
 
@@ -69818,7 +69817,7 @@
 
 
 /***/ },
-/* 27 */
+/* 28 */
 /***/ function(module, exports) {
 
 	/*
@@ -69874,7 +69873,7 @@
 
 
 /***/ },
-/* 28 */
+/* 29 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
@@ -70128,23 +70127,23 @@
 
 
 /***/ },
-/* 29 */
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(30);
+	var content = __webpack_require__(31);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(28)(content, {});
+	var update = __webpack_require__(29)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(30, function() {
-				var newContent = __webpack_require__(30);
+			module.hot.accept(31, function() {
+				var newContent = __webpack_require__(31);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -70154,10 +70153,10 @@
 	}
 
 /***/ },
-/* 30 */
+/* 31 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(27)();
+	exports = module.exports = __webpack_require__(28)();
 	// imports
 
 
@@ -70168,23 +70167,23 @@
 
 
 /***/ },
-/* 31 */
+/* 32 */
 /***/ function(module, exports, __webpack_require__) {
 
 	// style-loader: Adds some css to the DOM by adding a <style> tag
 
 	// load the styles
-	var content = __webpack_require__(32);
+	var content = __webpack_require__(33);
 	if(typeof content === 'string') content = [[module.id, content, '']];
 	// add the styles to the DOM
-	var update = __webpack_require__(28)(content, {});
+	var update = __webpack_require__(29)(content, {});
 	if(content.locals) module.exports = content.locals;
 	// Hot Module Replacement
 	if(true) {
 		// When the styles change, update the <style> tags
 		if(!content.locals) {
-			module.hot.accept(32, function() {
-				var newContent = __webpack_require__(32);
+			module.hot.accept(33, function() {
+				var newContent = __webpack_require__(33);
 				if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 				update(newContent);
 			});
@@ -70194,24 +70193,24 @@
 	}
 
 /***/ },
-/* 32 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
-	exports = module.exports = __webpack_require__(27)();
+	exports = module.exports = __webpack_require__(28)();
 	// imports
 
 
 	// module
-	exports.push([module.id, ".bk_pointer{\n    cursor: pointer;\n}\n\n.bookmark-heading{\n    padding: 0;\n    color: white;\n    background: #3E4FB2;\n    font-weight: 300;\n    text-align: center;\n    font-size: 18px;\n    font-family: 'Roboto', sans-serif;\n    margin-bottom: 25px; \n}\n\n.bookmark-heading h2.md-headline {\n    font-size: 20px;\n    font-weight: 400;\n    line-height: 15px;\n}\n\nspan.bk-del-icon {\n    cursor: pointer;\n}", ""]);
+	exports.push([module.id, ".bk_pointer{\n    cursor: pointer;\n}\n\n.bookmark-heading{\n    padding: 0;\n    color: white;\n    background: #3E4FB2;\n    font-weight: 300;\n    text-align: center;\n    font-size: 18px;\n    font-family: 'Roboto', sans-serif;\n    margin-bottom: 25px; \n}\n\n.bookmark-heading h2.md-headline {\n    font-size: 20px;\n    font-weight: 400;\n    line-height: 15px;\n}\n\nspan.bk-del-icon {\n    cursor: pointer;\n}\n\nmd-toast.md-default-theme .md-toast-content, md-toast .md-toast-content{\n    background: #FF0000\n}", ""]);
 
 	// exports
 
 
 /***/ },
-/* 33 */
+/* 34 */
 /***/ function(module, exports) {
 
-	module.exports = function ($scope, $location, $auth) {
+	module.exports = function ($scope, $location, $auth, ToastService) {
 	    var vm = this;
 	    vm.signup = function () {
 	        $auth.signup(vm.user)
@@ -70221,6 +70220,7 @@
 	                console.log('You have successfully created a new account and have been signed-in');
 	            })
 	            .catch(function (response) {
+	                ToastService.showToast(response.data.message)
 	                console.log(response.data.message);
 	            });
 	    };
@@ -70228,7 +70228,7 @@
 
 
 /***/ },
-/* 34 */
+/* 35 */
 /***/ function(module, exports) {
 
 	module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload) {
@@ -70411,16 +70411,6 @@
 	    $scope.answer = function (answer) {
 	        $mdDialog.hide(answer);
 	    };
-
-	    // $scope.uploadFavicon = function (file) {
-	    //         
-	    // };
-	    
-	    // if ($scope.category.favicon.length > 500) {
-	    //     $scope.favIconUrl = "data:image/jpeg;base64," + $scope.category.favicon; 
-	    // }else{
-	    //     $scope.favIconUrl = $scope.category.favicon;
-	    // }
 	    
 	    
 	    $scope.save = function () {
@@ -70449,10 +70439,10 @@
 
 
 /***/ },
-/* 35 */
+/* 36 */
 /***/ function(module, exports) {
 
-	module.exports = function ($scope, $location, $auth) {
+	module.exports = function ($scope, $location, $auth, ToastService) {
 	    var vm = this;
 
 	    vm.login = function () {
@@ -70462,6 +70452,7 @@
 	                $location.path('/');
 	            })
 	            .catch(function (error) {
+	                ToastService.showToast(error.data.message);
 	                console.log(error.data.message, error.status);
 	            });
 	    };
@@ -70473,7 +70464,7 @@
 
 
 /***/ },
-/* 36 */
+/* 37 */
 /***/ function(module, exports) {
 
 	module.exports = function ($location, $auth) {
