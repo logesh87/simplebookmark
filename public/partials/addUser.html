@@ -1,5 +1,5 @@
-<md-content class="md-padding" flex layout="row" layout-align="center center">
-    <form flex="40" name="signupForm">
+<md-content class="md-padding" layout="row" layout-xs="column" layout-wrap>
+    <form flex-gt-md="40" flex-sm name="signupForm">
 
         <md-input-container class="md-block">
             <label>Email</label>
@@ -13,7 +13,7 @@
         <md-input-container class="md-block">
             <label>Password</label>
 
-            <input  required type="password" name="password" required ng-model="vm.user.password" />
+            <input required type="password" name="password" required ng-model="vm.user.password" />
 
             <div ng-messages="signupForm.password.$error" role="alert">
                 <div ng-message="required">Please enter the password.</div>
@@ -23,7 +23,8 @@
         <md-input-container class="md-block">
             <label>Confirm password</label>
 
-            <input password-match="vm.user.password" required type="password" name="confirmPassword" required ng-model="vm.user.confirmPassword" />
+            <input password-match="vm.user.password" required type="password" name="confirmPassword" required ng-model="vm.user.confirmPassword"
+            />
 
             <div ng-messages="signupForm.confirmPassword.$error" role="alert">
                 <div ng-message="compareTo">Password must match.</div>

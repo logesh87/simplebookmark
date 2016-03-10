@@ -4,7 +4,7 @@
   "description": "A simple bookmarking app developed using MEAN stack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"    
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -51,9 +51,13 @@
   },
   "devDependencies": {
     "css-loader": "^0.23.1",
+    "gulp": "^3.9.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-rename": "^1.2.2",
     "jshint": "2.8.0",
     "jshint-loader": "0.8.3",
-    "ng-annotate-loader": "0.1.0",
+    "ng-annotate-loader": "^0.1.0",
+    "ng-annotate-webpack-plugin": "^0.1.2",
     "style-loader": "^0.13.0",
     "webpack": "1.12.11",
     "webpack-dev-server": "1.14.1",
