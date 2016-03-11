@@ -1,13 +1,11 @@
 var express = require('express'),
     mongoose = require('mongoose'),
-    qs = require('querystring'),
-    cors = require('cors'),
+    qs = require('querystring'),    
     colors = require('colors'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
     methodOverride = require('method-override'),
-    request = require('request'),
-    cors = require('cors'),
+    request = require('request'),    
     app = express(),
     port = process.env.PORT || 5000,
     db = require('./config/db'),
@@ -16,9 +14,8 @@ var express = require('express'),
 
 mongoose.connect(db.url);
 app.use(compress());
-app.use(express.static(__dirname + '/public'));
-//app.use(express.static(__dirname + '/app/uploads'));
-
+var cacheTime = 86400000*7;     // 7 days
+app.use(express.static(__dirname + '/public',{ maxAge: cacheTime }));
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "http://localhost");
