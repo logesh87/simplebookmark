@@ -1,13 +1,14 @@
 var angular = require('angular');
-
 var app = angular.module('app', [
     require('angular-ui-router'), 
     require('angular-material'), 
     require('angular-messages'), 
     require('angular-loading-bar'), 
     require('satellizer'),
+    require('angular-animate'),
     require('ng-file-upload')   
 ]);
+
 
 
 app.config(require('./config'));

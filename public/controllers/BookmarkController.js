@@ -1,3 +1,5 @@
+var _ = require('underscore');
+
 /*@ngInject*/ 
 module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload) {
     var vm = this;
@@ -48,30 +50,68 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
             "categoryId": cid,
             "bookmarkId": bid
         };
+        
+         var confirm = $mdDialog.confirm()
+                .title('Would you like to delete this bookmark?')
+                .textContent('This bookmark will be deleted permanently')
+                .ariaLabel('Lucky day')                
+                .ok('Please do it!')
+                .cancel('Cancel');
 
-        BookmarkFactory.deleteBookmark(data)
-            .then(function (res) {
-                vm.getBookmarks();
+            $mdDialog.show(confirm).then(function() {
+                 
+                 BookmarkFactory.deleteBookmark(data)
+                    .then(function (res) {
+                        
+                        _.each(vm.bookmarkList, function(item, idx) {      
+                            var i = _.findIndex(item.bookmarks, {_id: bid})
+                            if (i !== -1) {
+                                item.bookmarks.splice(i, 1);    
+                            }                                                                          
+                        });                                                                    
+                      
+                       console.log(res.data);
+                    }, function (res) {
+                        console.log(res);
+                    })
+            }, function() {
+                 
+            });
 
-                console.log(res.data);
-            }, function (res) {
-                console.log(res);
-            })
+      
     };
 
     vm.deleteCategory = function (cid) {
-        var data = {
-            "categoryId": cid
-        };
+            var data = {
+                "categoryId": cid
+            };              
+            // Appending dialog to document.body to cover sidenav in docs app
+            var confirm = $mdDialog.confirm()
+                .title('Would you like to delete this category?')
+                .textContent('All the bookmarks under this category will be deleted permanently')
+                .ariaLabel('Lucky day')                
+                .ok('Please do it!')
+                .cancel('Cancel');
 
-        BookmarkFactory.deleteCategory(data)
-            .then(function (res) {
-                vm.getBookmarks();
-                vm.getCategories();
-                console.log(res.data);
-            }, function (res) {
-                console.log(res);
-            })
+            $mdDialog.show(confirm).then(function() {
+                
+                BookmarkFactory.deleteCategory(data)
+                    .then(function (res) {
+                        var i = _.findIndex(vm.bookmarkList, {_id: cid})                                                        
+                        if (i !== -1) {
+                            vm.bookmarkList.splice(i, 1);    
+                        }                                                                                              
+                        vm.getCategories();
+                        console.log(res.data);
+                    }, function (res) {
+                        console.log(res);
+                    });
+                    
+            }, function() {
+                 
+            });
+        
+
     }
 
     vm.getBookmarks();
