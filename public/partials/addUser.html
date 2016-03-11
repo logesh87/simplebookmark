@@ -1,40 +1,52 @@
 <md-content class="md-padding" layout="row" layout-xs="column" layout-wrap>
-    <form flex-gt-md="40" flex-sm name="signupForm">
 
-        <md-input-container class="md-block">
-            <label>Email</label>
-            <input type="email" required name="email" ng-model="vm.user.email">
-            <div ng-messages="signupForm.email.$error">
-                <div ng-message="required">Please enter the email.</div>
-                <div ng-message="email">Please enter a valid email.</div>
-            </div>
-        </md-input-container>
+    <md-card flex-offset-gt-md="30" flex-gt-md="40">
+        <md-card-title class="bookmark-heading">
+            <md-card-title-text layout="row" style="position:relative;">
+                <div flex>
+                    <h2 class="md-headline">Add user </h2></div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <form flex-sm name="signupForm">
 
-        <md-input-container class="md-block">
-            <label>Password</label>
 
-            <input required type="password" name="password" required ng-model="vm.user.password" />
 
-            <div ng-messages="signupForm.password.$error" role="alert">
-                <div ng-message="required">Please enter the password.</div>
-            </div>
-        </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Email</label>
+                    <input type="email" required name="email" ng-model="vm.user.email">
+                    <div ng-messages="signupForm.email.$error">
+                        <div ng-message="required">Please enter the email.</div>
+                        <div ng-message="email">Please enter a valid email.</div>
+                    </div>
+                </md-input-container>
 
-        <md-input-container class="md-block">
-            <label>Confirm password</label>
+                <md-input-container class="md-block">
+                    <label>Password</label>
 
-            <input password-match="vm.user.password" required type="password" name="confirmPassword" required ng-model="vm.user.confirmPassword"
-            />
+                    <input required type="password" name="password" required ng-model="vm.user.password" />
 
-            <div ng-messages="signupForm.confirmPassword.$error" role="alert">
-                <div ng-message="compareTo">Password must match.</div>
-            </div>
-        </md-input-container>
+                    <div ng-messages="signupForm.password.$error" role="alert">
+                        <div ng-message="required">Please enter the password.</div>
+                    </div>
+                </md-input-container>
 
-        <md-input-container class="md-block">
-            <md-button class="md-raised md-primary" ng-disabled="signupForm.$invalid" ng-click="vm.signup()"> Signup </md-button>
-        </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Confirm password</label>
 
-    </form>
+                    <input password-match="vm.user.password" required type="password" name="confirmPassword" required ng-model="vm.user.confirmPassword"
+                    />
 
+                    <div ng-messages="signupForm.confirmPassword.$error" role="alert">
+                        <div ng-message="compareTo">Password must match.</div>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-button class="md-raised md-primary" ng-disabled="signupForm.$invalid" ng-click="vm.signup()"> Signup </md-button>
+                </md-input-container>
+
+            </form>
+        </md-card-content>
+    </md-card>
 </md-content>

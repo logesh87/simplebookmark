@@ -17,11 +17,11 @@
 
 <md-toolbar layout="row" class="md-padding">
   
-<div>
-    <a class="md-button" ui-sref="home">Bookmarks</a>
-    <a ng-show="isAuthenticated()" class="md-button" ui-sref="adduser">Add User</a>
-    <a ng-show="isAuthenticated()" class="md-button" ui-sref="logout">Logout</a>
-    <a ng-hide="isAuthenticated()" class="md-button" ui-sref="login">Login</a>    
+<div id="bks-menu">
+    <a class="md-button" ui-sref-active="active" ui-sref="home">Bookmarks</a>
+    <a ng-show="isAuthenticated()" class="md-button" ui-sref-active="active" ui-sref="adduser">Add User</a>
+    <a ng-show="isAuthenticated()" class="md-button" ui-sref-active="active" ui-sref="logout">Logout</a>
+    <a ng-hide="isAuthenticated()" class="md-button" ui-sref-active="active" ui-sref="login">Login</a>    
 </div>
 
 </md-toolbar>

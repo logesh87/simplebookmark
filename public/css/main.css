@@ -27,3 +27,6 @@ md-toast.md-default-theme .md-toast-content, md-toast .md-toast-content{
     background: #FF0000
 }
 
+#bks-menu a.active{
+    background-color: rgba(158,158,158,0.2);
+}
