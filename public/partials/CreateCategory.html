@@ -29,13 +29,14 @@
                 </div>
             </md-input-container>
 
-            <md-input-container class="md-block">
+            <md-input-container flex class="md-block">
                 <label>Bookmark Name</label>
                 <input required name="bookmarkName" ng-model="category.bookmarkName">
                 <div ng-messages="categoryForm.bookmarkName.$error">
                     <div ng-message="required">Please enter the bookmark name.</div>
                 </div>
             </md-input-container>
+            
             <md-input-container class="md-block">
                 <label>URI</label>
 
@@ -49,12 +50,15 @@
                 </div>
             </md-input-container>
 
-            <md-input-container>
-                <label for="pictures">Change favicon</label>
-                <input id="pictures" label="Upload Images" name="file"  ngf-pattern="'image/png,image/ico'"
-                ngf-select ng-model="category.favicon" accept="image/*"
-                ngf-max-size="100KB" ngf-validate="{width: {min: 16, max:32}, height: {min: 16, max: 32}}">
-                <img ng-show="myForm.file.$valid" ngf-thumbnail="category.favicon" class="thumb">
+            <md-input-container class="md-block">
+                <label>Change favicon</label>
+                
+                <input readonly id="pictures" label="Upload Images" name="file" ngf-pattern="'image/png,image/ico'" ngf-select
+                ng-model="category.favicon" accept="image/*" 
+                ngf-max-size="100KB" ngf-validate="{width: {min: 16, max:32}, height: {min: 16, max: 32}}"/>           
+                
+
+
                 <div ng-messages="categoryForm.file.$error">
                     <div ng-message="maxWidth">
                         Max Width has to be 32.
@@ -69,39 +73,12 @@
 
                 </div>
             </md-input-container>
-
-
-
-
-
-            <!--<md-input-container>
-
-                <div layout="row" flex="100">
-                    <div flex="30">
-                        <img ng-show="category.resetFavicon" ng-src="{{category.uri | favicon}}" alt="">
-                        <img alt="thumb" ng-hide="category.resetFavicon" ngf-src="category.favicon" ngf-no-object-url="true" class="thumb">
-                    </div>
-                    <div flex="70">
-                        <div class="button" ngf-select ng-model="category.favicon" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="100KB"
-                        ngf-max-height="25" ngf-max-width="25">Change favicon</div>
-                    </div>
-                </div>
-
-
-                <div ng-messages="categoryForm.file.$error">
-                    <div ng-message="maxWidth">
-                        Max Width has to be 25.
-                    </div>
-                    <div ng-message="maxHeight">
-                        Max height has to be 25.
-                    </div>
-
-                    <div ng-message="maxSize">
-                        File is bigger than 100KB.
-                    </div>
-
-                </div>
-            </md-input-container>-->
+            
+            <md-input-container class="md-block">
+                
+                    <img ng-show="myForm.file.$valid" ngf-thumbnail="category.favicon" class="thumb">
+                
+            </md-input-container>
 
             <md-input-container class="md-block">
                 <md-checkbox ng-model="category.resetFavicon">Reset Favicon</md-checkbox>
