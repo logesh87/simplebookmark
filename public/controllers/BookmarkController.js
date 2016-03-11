@@ -27,13 +27,8 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
     };
 
     vm.updateBookmark = function (bookmark) {    
-        Upload.upload({
-            url: '/updateBookmark', //webAPI exposed to upload the file                
-            data: { file: bookmark.favicon, 
-                bookmarkId: bookmark.bookmarkId, bookmarkName: bookmark.bookmarkName, 
-                bookmarkUri: bookmark.uri, resetFavicon: bookmark.resetFavicon                
-            } 
-        }).then(function (resp) { //upload function returns a promise
+        BookmarkFactory.updateBookmark(bookmark)
+        .then(function (resp) { //upload function returns a promise
             console.log(resp);
             vm.getBookmarks();                         
         }, function (resp) { //catch error
@@ -117,13 +112,10 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
     vm.getBookmarks();
     vm.getCategories();
 
-    vm.saveBookmark = function (category) {
+    vm.saveCategory = function (category) {
         if (category.categoryId && category.categoryId != "0") {
-            Upload.upload({
-                url: '/bookmark_with_cat', //webAPI exposed to upload the file                
-                data: { file: category.favicon, categoryId: category.categoryId, bookmarkId: category.bookmarkId, 
-                bookmarkName: category.bookmarkName, bookmarkUri: category.uri, resetFavicon: category.resetFavicon },                
-            }).then(function (resp) { //upload function returns a promise
+            BookmarkFactory.addBookmarkToCategory(category)
+            .then(function (resp) { //upload function returns a promise
                 console.log(resp);
                 vm.getBookmarks();
             }, function (resp) { //catch error
@@ -133,15 +125,9 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
                 console.log(evt);
                 var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);                                
             });
-
-
         } else {
-
-            Upload.upload({
-                url: '/bookmark', //webAPI exposed to upload the file                
-                data: { file: category.favicon, category_type: category.categoryName, bookmarkName: category.bookmarkName, 
-                bookmarkUri: category.uri, resetFavicon: category.resetFavicon }
-            }).then(function (resp) { //upload function returns a promise
+            BookmarkFactory.addNewCategory(category)
+            .then(function (resp) { //upload function returns a promise
                 console.log(resp);
                 vm.getBookmarks();
                 vm.getCategories();
@@ -155,20 +141,17 @@ module.exports = function ($scope, $mdDialog, $mdMedia, BookmarkFactory, Upload)
 
         }
 
-
     };
-
 
 
     vm.openCategoryModal = function (ev, bookmark, cId) {
 
         $mdDialog.show({
-            controller: DialogController,
-            //controllerAs: 'ctrl',
+            controller: DialogController,            
             templateUrl: '../../partials/CreateCategory.html',
             locals: {
                 items: {
-                    saveBookmark: vm.saveBookmark,
+                    saveCategory: vm.saveCategory,
                     categories: vm.categories,
                     updateBookmark: vm.updateBookmark,
                     bookmark: bookmark,
@@ -231,7 +214,7 @@ function DialogController($scope, $mdDialog, items, Upload, $window) {
                 $scope.category.categoryId = items.categoryId
             }
 
-            items.saveBookmark($scope.category);
+            items.saveCategory($scope.category);
         }
 
         $mdDialog.hide();

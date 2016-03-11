@@ -1,4 +1,5 @@
 <md-dialog style="width:50%;" aria-label="Create Category" ng-cloak>
+    <form ng-submit="save()" name="categoryForm">
     <md-toolbar>
         <div class="md-toolbar-tools">
             <h2>Create new category</h2>
@@ -9,7 +10,7 @@
         </div>
     </md-toolbar>
     <md-dialog-content class="md-padding">
-        <form ng-submit="save()" name="categoryForm">
+        
             <md-input-container class="md-block" ng-show="!editBookmark && categories.length > 1 && !addBookmark">
                 <label>Select category Name</label>
 
@@ -58,7 +59,6 @@
                 ngf-max-size="100KB" ngf-validate="{width: {min: 16, max:32}, height: {min: 16, max: 32}}"/>           
                 
 
-
                 <div ng-messages="categoryForm.file.$error">
                     <div ng-message="maxWidth">
                         Max Width has to be 32.
@@ -86,14 +86,16 @@
 
 
             <md-input-container class="md-block">
-                <md-button class="md-raised md-primary" type="submit" ng-disabled="categoryForm.$invalid"> Save </md-button>
+               
             </md-input-container>
-        </form>
+        
     </md-dialog-content>
     <md-dialog-actions layout="row">
         <span flex></span>
+        <md-button class="md-raised md-primary" type="submit" ng-disabled="categoryForm.$invalid"> Save </md-button>
         <md-button class="md-raised md-primary" ng-click="cancel('cancel')" style="margin-right:20px;">
             cancel
         </md-button>
     </md-dialog-actions>
+    </form>
 </md-dialog>

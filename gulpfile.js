@@ -34,7 +34,7 @@ gulp.task('build', function() {
     .pipe(source('bundle.min.js'))
     .pipe(buffer())
     .pipe(ngAnnotate())
-    .pipe(uglify())
+    //.pipe(uglify())
     .pipe(gulp.dest(PATHS.app + "/dist"));  
 });
 

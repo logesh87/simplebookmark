@@ -7,7 +7,7 @@
 	
 <md-content class="md-padding" layout-xs="column"  layout="row" layout-wrap>
     <div flex-gt-md="25" layout-column ng-repeat="c in vm.bookmarkList">
-        <md-card>
+        <md-card flex>
             <md-card-title class="bookmark-heading">
                 <md-card-title-text layout="row" style="position:relative;">
                     <div ng-show="isAuthenticated()" flex="10">
@@ -28,8 +28,8 @@
             </md-card-title>
             <md-card-content layout="row" ng-repeat="b in c.bookmarks">            
                 <div flex="80"> 
-                    <img ng-show="b.resetFavicon" ng-src="{{b.uri | favicon}}" alt="{{b.name}}">
-                    <img ng-hide="b.resetFavicon" ng-src="data:image/jpeg;base64, {{b.favicon}}" alt="{{b.name}}">
+                    <img ng-show="b.resetFavicon || b.favicon.length < 1" ng-src="{{b.uri | favicon}}" alt="{{b.name}}">
+                    <img ng-hide="b.resetFavicon || b.favicon.length < 1" ng-src="data:image/jpeg;base64, {{b.favicon}}" alt="{{b.name}}">
                     <a target="_blank" ng-href="{{b.uri}}">{{b.name | uppercase}}</a>
                 </div>
                 <div ng-show="isAuthenticated()" flex="20">     
