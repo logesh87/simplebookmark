@@ -11,8 +11,8 @@ var express = require('express'),
     app = express(),
     port = process.env.PORT || 5000,
     db = require('./config/db'),
-    mongoose = require('mongoose')
-
+    mongoose = require('mongoose'),
+    compress = require('compression');
 
 mongoose.connect(db.url);
 
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
-
+app.use(compress());
 require('./app/routes')(app);
 
 

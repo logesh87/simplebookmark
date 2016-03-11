@@ -4,7 +4,7 @@
   "description": "A simple bookmarking app developed using MEAN stack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"    
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -25,7 +25,7 @@
     "angular-animate": "^1.5.0",
     "angular-aria": "^1.5.0",
     "angular-loading-bar": "^0.8.0",
-    "angular-material": "^1.0.5",
+    "angular-material": "^1.0.6",
     "angular-messages": "^1.5.0",
     "angular-ui-router": "^0.2.18",
     "async": "^1.5.0",
@@ -34,6 +34,7 @@
     "bower": "^1.7.7",
     "busboy": "^0.2.12",
     "colors": "^1.1.2",
+    "compression": "^1.6.1",
     "connect-multiparty": "^2.0.0",
     "cors": "^2.7.1",
     "express": "^4.13.4",
@@ -50,7 +51,9 @@
     "satellizer": "^0.14.0"
   },
   "devDependencies": {
+    "browserify-cdnjs": "^0.1.6",
     "browserify-css": "^0.9.0",
+    "browserify-shim": "^3.8.12",
     "gulp": "^3.9.1",
     "gulp-browserify": "^0.5.1",
     "gulp-clean": "^0.3.2",
