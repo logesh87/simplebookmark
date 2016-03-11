@@ -15,9 +15,9 @@ var express = require('express'),
     compress = require('compression');
 
 mongoose.connect(db.url);
-
+app.use(compress());
 app.use(express.static(__dirname + '/public'));
-app.use(express.static(__dirname + '/app/uploads'));
+//app.use(express.static(__dirname + '/app/uploads'));
 
 
 app.use(function (req, res, next) {
@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
-app.use(compress());
+
 require('./app/routes')(app);
 
 
