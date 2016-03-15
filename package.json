@@ -23,10 +23,10 @@
   "dependencies": {
     "angular": "^1.5.0",
     "angular-animate": "^1.5.0",
-    "angular-aria": "^1.5.0",
-    "angular-loading-bar": "^0.8.0",
+    "angular-aria": "^1.5.0",    
     "angular-material": "^1.0.6",
     "angular-messages": "^1.5.0",
+    "angular-spinners": "^3.1.2",
     "angular-ui-router": "^0.2.18",
     "async": "^1.5.0",
     "bcryptjs": "^2.3.0",

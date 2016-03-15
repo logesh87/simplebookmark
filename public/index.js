@@ -3,10 +3,11 @@ var app = angular.module('app', [
     require('angular-ui-router'), 
     require('angular-material'), 
     require('angular-messages'), 
-    require('angular-loading-bar'), 
+    //require('angular-loading-bar'), 
     require('satellizer'),
     require('angular-animate'),
-    require('ng-file-upload')   
+    require('ng-file-upload'),
+    require('angular-spinners')
 ]);
 
 
