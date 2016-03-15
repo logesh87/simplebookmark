@@ -1,0 +1,22 @@
+<md-content class="md-padding" layout="row" layout-xs="column" layout-wrap>
+    <md-card flex-offset-gt-md="30" flex-gt-md="40">
+        <md-card-title class="bookmark-heading">
+            <md-card-title-text layout="row" style="position:relative;">
+                <div flex>
+                    <h2 class="md-headline">Users</h2></div>
+            </md-card-title-text>
+        </md-card-title>
+        <md-card-content>
+            <md-list flex flex-offset-md="20" ng-repeat="user in vm.users" ng-cloak>
+                <md-list-item>
+                    <p> {{ user.email }} </p>
+                    <md-button class="md-fab md-mini md-primary" ng-click="vm.deleteUser(user._id)" aria-label="Use Android">
+                        <md-icon>delete_forever</md-icon>
+                    </md-button>
+                </md-list-item>
+                <md-divider></md-divider>
+            </md-list>
+        </md-card-content>
+    </md-card>
+
+</md-content>

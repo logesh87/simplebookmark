@@ -187,9 +187,21 @@ module.exports = function (app) {
 
 
     //protected route example
-    app.get('/api/me', ensureAuthenticated, function (req, res) {
-        User.findById(req.user, function (err, user) {
-            res.send(user);
+    app.get('/users', ensureAuthenticated, function (req, res) {
+        User.find(function (err, users) {
+            res.send(users);
+        });
+    });
+    
+    app.delete('/user', ensureAuthenticated, function (req, res) {
+       User.remove({
+            _id: req.body.userId
+        }, function (err, bookmark) {
+            if (err) {
+                res.send(err);
+            }
+
+            res.json({ message: "Successfully deleted" });
         });
     });
 

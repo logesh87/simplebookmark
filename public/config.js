@@ -23,11 +23,20 @@ module.exports = function ($stateProvider, $urlRouterProvider, $authProvider) {
         .state('adduser', {
             url: '/add_user',
             templateUrl: 'partials/addUser.html',
-            controller: 'AdduserCtrl',
+            controller: 'UsersCtrl',
             controllerAs: "vm",
             resolve: {
                 loginRequired: loginRequired
 
+            }
+        })
+        .state('users', {
+            url: '/users',
+            templateUrl: 'partials/users.html',
+            controller: 'UsersCtrl',
+            controllerAs: "vm",
+            resolve: {
+                loginRequired: loginRequired
             }
         })
         .state('logout', {
