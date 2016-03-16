@@ -11,7 +11,7 @@ module.exports = function (app) {
     //Authentication middleware 
     function ensureAuthenticated(req, res, next) {
         if (!req.header('Authorization')) {
-            return res.status(401).send({ message: 'Please make sure your request has an Authorization header' });
+            return res.status(401).send({ message: 'Please make sure your request has an Authorization header.' });
         }
         var token = req.header('Authorization').split(' ')[1];
 
