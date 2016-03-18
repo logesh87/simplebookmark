@@ -4,9 +4,11 @@ var mongoose = require('mongoose'),
     moment = require('moment'),
     jwt = require('jwt-simple'),
     multer = require('multer'),
-    fs = require('fs');
-module.exports = function (app) {
-    
+    fs = require('fs'),
+    sizeOf = require('image-size'),
+    path = require('path');
+module.exports = function (app, router) {
+    app.use('/', router);
 
     //Authentication middleware 
     function ensureAuthenticated(req, res, next) {
@@ -40,7 +42,7 @@ module.exports = function (app) {
     }
 
     //Get all categories
-    app.get('/categories', function (req, res) {
+    router.get('/categories', function (req, res) {
         var query = Bookmark.find({}, { category_type: 1, _id: 1 });
         query.exec(function (err, bookmarks) {
             if (err) {
@@ -51,7 +53,7 @@ module.exports = function (app) {
     });
 
     //Get all bookmarks
-    app.get('/bookmarks', function (req, res) {
+    router.get('/bookmarks', function (req, res) {
         var query = Bookmark.find({});
         query.exec(function (err, bookmarks) {
             if (err) {
@@ -62,7 +64,7 @@ module.exports = function (app) {
     });
 
     //Add a new category with a bookmark
-    app.post('/bookmark', ensureAuthenticated, function (req, res) {
+    router.post('/bookmark', ensureAuthenticated, function (req, res) {
 
         upload(req, res, function (err) {
             if (err) {
@@ -75,27 +77,24 @@ module.exports = function (app) {
                 file: req.file
             }
 
-            var file = form.file, filePath = "", fileB64 = "";
+            var file = form.file;
 
             if (file) {
-                filePath = file.path + "." + file.mimetype.split("/")[1];
-                console.log(file.originalName);
-                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
-                fs.unlink(req.file.path);
+                var filename = file.filename || "";
             }
 
             var bookmarkCat = new Bookmark();
             bookmarkCat.category_type = req.body.category_type;
-            
+
             var bookmark = {
-                name : form.body.bookmarkName,
-                uri : form.body.bookmarkUri,
-                favicon : fileB64,
-                resetFavicon: form.body.resetFavicon   
+                name: form.body.bookmarkName,
+                uri: form.body.bookmarkUri,
+                favicon: filename,
+                resetFavicon: form.body.resetFavicon
             }
             bookmarkCat.bookmarks.push(bookmark);
-            
-            
+
+
             bookmarkCat.save(function (err) {
                 if (err) {
                     res.send(err);
@@ -107,9 +106,9 @@ module.exports = function (app) {
 
     });
 
-    app.post('/bookmark_with_cat', ensureAuthenticated, function (req, res) {
-        
-         upload(req, res, function (err) {
+    router.post('/bookmark_with_cat', ensureAuthenticated, function (req, res) {
+
+        upload(req, res, function (err) {
             if (err) {
                 console.log(err);
                 return
@@ -120,26 +119,23 @@ module.exports = function (app) {
                 file: req.file
             }
 
-            var file = form.file, filePath = "", fileB64 = "";
+            var file = form.file;
 
             if (file) {
-                filePath = file.path + "." + file.mimetype.split("/")[1];
-                console.log(file.originalName);
-                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
-                fs.unlink(req.file.path);
+                var filename = file.filename || "";
             }
 
-            
+
             Bookmark.findById(form.body.categoryId, function (err, result) {
                 console.log(result);
                 if (err) {
                     res.send(err);
                 }
-                
-                 var bookmark = {
-                    name : form.body.bookmarkName,
-                    uri : form.body.bookmarkUri,
-                    favicon : fileB64,
+
+                var bookmark = {
+                    name: form.body.bookmarkName,
+                    uri: form.body.bookmarkUri,
+                    favicon: filename,
                     resetFavicon: form.body.resetFavicon
                 }
 
@@ -161,7 +157,7 @@ module.exports = function (app) {
     });
 
     //Delete a single bookmark
-    app.delete('/bookmark', ensureAuthenticated, function (req, res) {
+    router.delete('/bookmark', ensureAuthenticated, function (req, res) {
         Bookmark.findByIdAndUpdate(req.body.categoryId, {
             $pull: { 'bookmarks': { _id: req.body.bookmarkId } }
         }, function (err, data) {
@@ -173,7 +169,7 @@ module.exports = function (app) {
     });
 
     //Delete a whole category with bookmarks
-    app.delete('/category', ensureAuthenticated, function (req, res) {
+    router.delete('/category', ensureAuthenticated, function (req, res) {
         Bookmark.remove({
             _id: req.body.categoryId
         }, function (err, bookmark) {
@@ -187,26 +183,42 @@ module.exports = function (app) {
 
 
     //protected route example
-    app.get('/users', ensureAuthenticated, function (req, res) {
-        User.find(function (err, users) {
+    router.get('/users', ensureAuthenticated, function (req, res) {
+        User.find(function (err, data) {
+            var users = data.filter(function (user) {
+                return user.email !== "bookmarkadmin@krds.com"
+            });
             res.send(users);
         });
     });
-    
-    app.delete('/user', ensureAuthenticated, function (req, res) {
-       User.remove({
-            _id: req.body.userId
-        }, function (err, bookmark) {
-            if (err) {
-                res.send(err);
+
+    router.delete('/user', ensureAuthenticated, function (req, res) {
+
+        User.findById(req.body.userId, function (err, user) {
+            console.log(user);
+            if (user.email == "bookmarkadmin@krds.com") {
+                res.status(400);
+                res.send({message:"You are not allowed to delete this user"});
+            } else {
+                
+                User.remove({
+                    _id: req.body.userId
+                }, function (err, bookmark) {
+                    if (err) {
+                        res.send(err);
+                    }
+
+                    res.json({ message: "Successfully deleted" });
+                });
             }
 
-            res.json({ message: "Successfully deleted" });
         });
+
+
     });
 
     //Login 
-    app.post('/auth/login', function (req, res) {
+    router.post('/auth/login', function (req, res) {
         User.findOne({ email: req.body.email }, '+password', function (err, user) {
             if (!user) {
                 return res.status(401).send({ message: 'Invalid email and/or password' });
@@ -222,7 +234,7 @@ module.exports = function (app) {
 
 
     //signup
-    app.post('/auth/signup', function (req, res) {
+    router.post('/auth/signup', function (req, res) {
         User.findOne({ email: req.body.email }, function (err, existingUser) {
             if (existingUser) {
                 return res.status(409).send({ message: 'Email is already taken' });
@@ -233,15 +245,39 @@ module.exports = function (app) {
                 email: req.body.email,
                 password: req.body.password
             });
+            console.log(user);
             user.save(function (err, result) {
                 if (err) {
                     res.status(500).send({ message: err.message });
+                } else {
+                    res.send({ "message": "user added successfully" });
+                    //res.send({ token: createJWT(result) });    
                 }
-                res.send({ token: createJWT(result) });
+
+
             });
         });
     });
 
+    router.get('/image/:filename', function (req, res) {
+        var file = __dirname + '/uploads/' + req.params.filename;
+        var dimensions = sizeOf(file);
+
+        fs.readFile(file, function (err, content) {
+            if (err) {
+                res.writeHead(400, { 'Content-type': 'text/html' })
+                console.log(err);
+                res.end("No such image");
+            } else {
+                //specify the content type in the response will be an image
+                res.writeHead(200, { 'Content-type': 'image/png' });
+                res.end(content);
+            }
+        });
+
+    });
+    
+    //grabs the image and store it under app/uploads 
     var storage = multer.diskStorage({
         destination: function (req, file, cb) {
             cb(null, __dirname + '/uploads/')
@@ -251,9 +287,9 @@ module.exports = function (app) {
         }
     })
 
-    var upload = multer({ storage: storage }).single('file');
+    var upload = multer({ storage: storage, limits: { fileSize: 30000, files: 1 } }).single('file');
 
-    app.post('/updateBookmark', ensureAuthenticated, function (req, res) {
+    router.post('/updateBookmark', ensureAuthenticated, function (req, res) {
 
         upload(req, res, function (err) {
             if (err) {
@@ -266,13 +302,14 @@ module.exports = function (app) {
                 file: req.file
             }
 
-            var file = form.file, filePath = "", fileB64 = "";
+            var file = form.file;
 
             if (file) {
-                filePath = file.path + "." + file.mimetype.split("/")[1];
-                console.log(file.originalName);
-                fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
-                fs.unlink(req.file.path);
+                //var filepath = file.path + "." + file.mimetype.split("/")[1] || "";
+                var filename = file.filename || "";
+                                                               
+                // fileB64 = new Buffer(fs.readFileSync(file.path)).toString("base64");
+                // fs.unlink(req.file.path);
             }
 
 
@@ -280,7 +317,7 @@ module.exports = function (app) {
                 '$set': {
                     'bookmarks.$.name': form.body.bookmarkName,
                     'bookmarks.$.uri': form.body.bookmarkUri,
-                    'bookmarks.$.favicon': fileB64,
+                    'bookmarks.$.favicon': filename,
                     'bookmarks.$.resetFavicon': form.body.resetFavicon
                 }
             }, function (err, data) {
@@ -290,8 +327,7 @@ module.exports = function (app) {
                 res.json(data);
             });
 
-          
-
+       
             // if (filedata && require('fs').statSync(filedata.path).isFile()) {
             //     return res.status(200).send('OK')
             // }
@@ -302,35 +338,5 @@ module.exports = function (app) {
         });
 
     });
-   
-    
-    //     var storage = multer.diskStorage({ //multers disk storage settings
-    //         destination: function (req, file, cb) {
-    //             cb(null, './uploads/')
-    //         },
-    //         filename: function (req, file, cb) {
-    //             var datetimestamp = Date.now();
-    //             cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-    //         }
-    //     });
-    //     
-    //     var upload = multer({ //multer settings
-    //                     storage: storage
-    //                 }).single('file');
-    // 
-    // 
-    // 
-    //     app.post('/favicon', function(req, res) {
-    //         upload(req,res,function(err){
-    //             if(err){
-    //                  res.json({error_code:1,err_desc:err});
-    //                  return;
-    //             }
-    //              res.json({error_code:0,err_desc:null});
-    //         })
-    //        
-    //     });
-    
-
 
 };

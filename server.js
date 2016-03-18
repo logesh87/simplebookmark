@@ -4,7 +4,7 @@ var express = require('express'),
     colors = require('colors'),
     morgan = require('morgan'),
     bodyParser = require('body-parser'),
-    methodOverride = require('method-override'),
+    methodOverride = require('method-override'),    
     request = require('request'),    
     app = express(),
     port = process.env.PORT || 5000,
@@ -28,8 +28,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.text());
 app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
 app.use(methodOverride());
-
-require('./app/routes')(app);
+var router = express.Router();
+require('./app/routes')(app, router);
 
 
 app.listen(port);
