@@ -12,7 +12,7 @@ var BookmarkSchema = new Schema({
 					var re = /^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/;
 					return re.test(v);				
 				},
-				message:"Not a valid uri!"
+				message:"Not a valid uri."
 			},
 			required: true 
 		},
