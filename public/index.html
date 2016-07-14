@@ -7,15 +7,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="description" content="">
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="dist/main.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-material/1.0.6/angular-material.min.css">
+    <link rel="stylesheet" href="dist/main.min.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"> 
 	
 </head>
 
 <body ng-controller="MainCtrl" layout="column">
 
-<md-toolbar layout="row" class="md-padding">
+
+
+<div flex layout="row">		
+	<md-content flex id="content"> 
+        <spinner name="booksSpinner" class="loading"></spinner>
+		<ui-view></ui-view>
+	</md-content>	
+</div>
+<md-toolbar layout="row" class="md-padding header">
   
 <div id="bks-menu">
     <a class="md-button" ui-sref-active="active" ui-sref="home">Bookmarks</a>
@@ -26,14 +34,6 @@
 </div>
 
 </md-toolbar>
-
-<div flex layout="row">		
-	<md-content flex id="content"> 
-        <spinner name="booksSpinner" class="loading"></spinner>
-		<ui-view></ui-view>
-	</md-content>	
-</div>
-
 <script async="true" type="text/javascript" src="dist/bundle.min.js"></script>
 
 </body>
