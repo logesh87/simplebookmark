@@ -43,5 +43,5 @@ public/bower_components
 config
 
 #build
-dist
+#public/dist
 

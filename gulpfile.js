@@ -28,7 +28,7 @@ gulp.task('css', function(){
 		.pipe(gulp.dest(PATHS.app + "/dist")); 
 })
 
-gulp.task('build', function() {
+gulp.task('js', function() {
   return browserify(PATHS.app + "/index.js")
     .bundle()
     .pipe(source('bundle.min.js'))
@@ -38,4 +38,4 @@ gulp.task('build', function() {
     .pipe(gulp.dest(PATHS.app + "/dist"));  
 });
 
-gulp.task('default', ['clean', 'css','build']);
+gulp.task('default', ['clean', 'css', 'js']);
