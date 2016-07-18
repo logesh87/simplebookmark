@@ -39,4 +39,6 @@ typings
 #bower components
 public/bower_components
 
+#dbconfig
+config
 
