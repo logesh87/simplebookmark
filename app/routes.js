@@ -43,7 +43,7 @@ module.exports = function (app, router) {
 
     //Get all categories
     router.get('/categories', function (req, res) {
-        var query = Bookmark.find({}, { category_type: 1, _id: 1 });
+        var query = Bookmark.find({}, { category_type: 1, _id: 1 }).sort({ created_at: -1 });
         query.exec(function (err, bookmarks) {
             if (err) {
                 res.send(err);
@@ -54,7 +54,7 @@ module.exports = function (app, router) {
 
     //Get all bookmarks
     router.get('/bookmarks', function (req, res) {
-        var query = Bookmark.find({});
+        var query = Bookmark.find({}).sort({ created_at: -1 });
         query.exec(function (err, bookmarks) {
             if (err) {
                 res.send(err);
