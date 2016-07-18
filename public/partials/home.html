@@ -30,7 +30,7 @@
                 <div flex="80"> 
                     <img ng-show="b.resetFavicon" ng-src="{{b.uri | favicon}}" alt="{{b.name}}">
                     <img ng-hide="b.resetFavicon" ng-src="image/{{b.favicon}}" alt="{{b.name}}">                    
-                    <a target="_blank" ng-href="{{b.uri}}">{{b.name | lowercase}}</a>
+                    <a target="_blank" ng-href="{{b.uri}}">{{b.name }}</a>
                 </div>
                 <div ng-show="isAuthenticated()" flex="20">     
                     <span class="bk_pointer" ng-click="vm.openCategoryModal($event, b)"> <md-icon>edit</md-icon></span>  
