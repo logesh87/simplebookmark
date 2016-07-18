@@ -42,3 +42,6 @@ public/bower_components
 #dbconfig
 config
 
+#build
+dist
+

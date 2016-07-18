@@ -8,11 +8,11 @@ var express = require('express'),
     request = require('request'),    
     app = express(),
     port = process.env.PORT || 5000,
-    db = require('./config/db'),
+    //db = require('./config/db'),
     mongoose = require('mongoose'),
     compress = require('compression');
 
-mongoose.connect(db.url);
+mongoose.connect(process.env.db);
 app.use(compress());
 var cacheTime = 86400000*7;     // 7 days
 app.use(express.static(__dirname + '/public',{ maxAge: cacheTime }));
